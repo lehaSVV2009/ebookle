@@ -21,7 +21,38 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
 
-    <h2>${book.title} </h2><br/>
+
+
+    <h2>${book.title} </h2>
+
+    <br/>
+
+
+    <c:forEach items="${book.chapters}" var="chapter">
+        ${chapter.title}
+        <br/>
+    </c:forEach>
+    <br/>
+
+
+    <!--
+    <a href="/createChapter">Create Chapter</a>
+    <br/>
+
+    ${chapter.title}
+    <br/>
+    ${chapter.text}
+    <br/>
+    ${chapter.book.title}
+    <br/>
+    -->
+
+    <!--<form:form>
+        <form:radiobuttons path="chosenChapter" items="${chapters}"/>
+    </form:form>
+    -->
+    <br/>
+    <br/>
 
 
 

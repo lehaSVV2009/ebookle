@@ -1,6 +1,7 @@
 package com.ebookle.dao;
 
 import com.ebookle.entity.Book;
+import com.ebookle.entity.User;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -66,6 +67,14 @@ public class BookDAOImpl implements BookDAO{
     public Book findByIdWithAuthor (int id) {
         return (Book) getSession().createCriteria(Book.class).setFetchMode("user", FetchMode.EAGER)
                 .add(Restrictions.idEq(id)).uniqueResult();
+    }
+
+    @Override
+    public Book findByTitleAndUserId (String title, User user) {
+        return (Book) getSession().createCriteria(Book.class).setFetchMode("chapters", FetchMode.EAGER)
+                .add(Restrictions.eq("user", user))
+                .add(Restrictions.eq("title", title))
+                .uniqueResult();
     }
 
 }

@@ -6,8 +6,10 @@ import com.ebookle.entity.Category;
 import com.ebookle.entity.Chapter;
 */
 import com.ebookle.entity.Category;
+import com.ebookle.entity.Chapter;
 import com.ebookle.entity.User;
 import com.ebookle.service.*;
+import com.ebookle.util.UtilStrings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -54,18 +57,14 @@ public class MainController {
 
     @Autowired
     private CategoryService categoryService;
-    /*@Autowired
-    private SimpleMailMessage preConfiguredMessage;
 
     @Autowired
-    private MailSender mailSender;
-    */
+    private ChapterService chapterService;
 
     //later: add rus internationalization
     //model.put(JRParameter.REPORT_RESOURCE_BUNDLE , resourceBundle);
 
-
-    private User createRandomUser() {
+    private User createRandomUser () {
         User user = new User(
                 service.createRandomKey(),
                 service.createRandomKey(),
@@ -79,7 +78,7 @@ public class MainController {
         return user;
     }
 
-    private Book createRandomBook(User user) {
+    private Book createRandomBook (User user) {
         return new Book(
                 service.createRandomKey(),
                 service.createRandomKey(),
@@ -89,15 +88,22 @@ public class MainController {
     }
 
     @RequestMapping("/")
-    public String goHome(ModelMap modelMap, Principal principal) {
+    public String goHome (ModelMap modelMap, Principal principal, RedirectAttributes redirectAttributes) {
 
         try {
             List<Book> books = bookService.findAllWithAuthors();
+            if (books == null) {
+                return showFlashMessage("Bad database", redirectAttributes);
+            }
             modelMap.addAttribute("books", books);
 
             if (principal != null) {
                 String login = principal.getName();
                 User user = userService.findByLogin(login);
+                if (user == null) {
+                    return showFlashMessage("Bad database", redirectAttributes);
+                }
+
                 modelMap.addAttribute("user", user);
                 modelMap.addAttribute("userBooks", user.getBooks());
             }
@@ -109,19 +115,19 @@ public class MainController {
     }
 
     @RequestMapping("/registration")
-    public String goToRegistration(ModelMap modelMap) {
+    public String goToRegistration (ModelMap modelMap) {
         return "registration";
     }
 
     @RequestMapping("/register")
-    public String register(RedirectAttributes redirectAttributes,
-                           @RequestParam("login") String login,
-                           @RequestParam("password") String password,
-                           @RequestParam("email") String email,
-                           @RequestParam("name") String name,
-                           @RequestParam("surname") String surname) {
+    public String register (RedirectAttributes redirectAttributes,
+                            @RequestParam("login") String login,
+                            @RequestParam("password") String password,
+                            @RequestParam("email") String email,
+                            @RequestParam("name") String name,
+                            @RequestParam("surname") String surname) {
 
-        if (!checkParams(login, password, email, name, surname)) {
+        if (! checkParams(login, password, email, name, surname)) {
             redirectAttributes.addFlashAttribute("badInput", "Bad input!!!");
             return "redirect:/registration";
         }
@@ -132,9 +138,9 @@ public class MainController {
 
     @RequestMapping(value = "/registration_success", method = RequestMethod.GET)
     @ResponseBody
-    public String registrationSuccess(ModelMap modelMap/*@RequestHeader("key") String userKey*/) {
+    public String registrationSuccess (ModelMap modelMap/*@RequestHeader("key") String userKey*/) {
 
-        //  later: registration of User(get headers)
+        //TODO: registration of User(get headers)
         if (registrationService.activateUser("someKey")) {
             modelMap.addAttribute("registrationSuccess", "Registration was successful!");
             return "registration_success";
@@ -143,7 +149,7 @@ public class MainController {
     }
 
 
-    private boolean checkParams(String login, String password, String email, String name, String surname) {
+    private boolean checkParams (String login, String password, String email, String name, String surname) {
         if ("".equals(login.trim())
                 || "".equals(password.trim())
                 || "".equals(email.trim())
@@ -151,36 +157,39 @@ public class MainController {
                 || "".equals(surname.trim())) {
             return false;
         }
-        if(!checkLogin(login)) {
+        if (! checkLogin(login)) {
             return false;
         }
         return true;
     }
 
-    private boolean checkLogin(String login) {
-        //later: check login in database
+    private boolean checkLogin (String login) {
+        //TODO: check login in database
         return true;
     }
 
     @RequestMapping(value = "/welcome")
-    public String welcomeUser(ModelMap modelMap) {
+    public String welcomeUser (ModelMap modelMap, Principal principal) {
+        modelMap.addAttribute("userLogin", principal.getName());
         return "redirect:/";
     }
 
     @RequestMapping(value = "/login_fail")
-    public String loginFail(RedirectAttributes redirectAttributes) {
+    public String loginFail (RedirectAttributes redirectAttributes) {
+
         redirectAttributes.addFlashAttribute("flashMessage", "Login was failed!");
         return "redirect:/";
     }
 
     @RequestMapping(value = "/logout")
-    public String logout(RedirectAttributes redirectAttributes) {
+    public String logout (RedirectAttributes redirectAttributes) {
+
         redirectAttributes.addFlashAttribute("flashMessage", "You are log out");
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/showBook/{id}", method = RequestMethod.GET)
-    public String showBooks(@PathVariable("id") Integer id, ModelMap modelMap) {
+    @RequestMapping(value = "/{userLogin}/showBook/{id}", method = RequestMethod.GET)
+    public String showBooks (@PathVariable("id") Integer id, ModelMap modelMap) {
 
         Book book = bookService.findByIdWithAuthor(id);
         modelMap.addAttribute("book", book);
@@ -189,7 +198,7 @@ public class MainController {
 
     @Secured("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String goToAdminPage(ModelMap modelMap) {
+    public String goToAdminPage (ModelMap modelMap) {
 
         List<User> users = adminService.getUsersHasRoleUser();
         modelMap.addAttribute("users", users);
@@ -198,7 +207,7 @@ public class MainController {
 
     @Secured("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/removeUser/{id}", method = RequestMethod.POST)
-    public String removeUser(@PathVariable("id") Integer userId, ModelMap modelMap) {
+    public String removeUser (@PathVariable("id") Integer userId, ModelMap modelMap) {
 
         adminService.removeUser(userId);
         return "redirect:/admin";
@@ -207,18 +216,21 @@ public class MainController {
     //  Book creation
 
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @RequestMapping(value = "/bookCreation", method = RequestMethod.GET)
-    public String goToBookCreation(ModelMap modelMap) {
+    @RequestMapping(value = "/{userLogin}/bookCreation", method = RequestMethod.GET)
+    public String goToBookCreation (@PathVariable("userLogin") String userLogin, ModelMap modelMap) {
         modelMap.addAttribute("categories", categoryService.findAll());
+        modelMap.addAttribute("userLogin", userLogin);
         return "create_new_book";
     }
 
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @RequestMapping(value = "/createNewBook", method = RequestMethod.POST)
-    public String createNewBook(Principal principal, @RequestParam("title") String title, @RequestParam("description") String description, @RequestParam("category") String categoryIndex, ModelMap modelMap) {
+    @RequestMapping(value = "/{userLogin}/createNewBook", method = RequestMethod.POST)
+    public String createNewBook (@PathVariable("userLogin") String userLogin, @RequestParam("title") String title, @RequestParam("description") String description, @RequestParam("category") Integer categoryId, ModelMap modelMap) {
 
-        User user = userService.findByLogin(principal.getName());
-        Category category = categoryService.findById(Integer.parseInt(categoryIndex));//findByName()
+        //TODO: checkParams
+        //TODO: checkBookName
+        User user = userService.findByLogin(userLogin);
+        Category category = categoryService.findById(categoryId);
         Book book = new Book(
                 title,
                 description,
@@ -226,21 +238,42 @@ public class MainController {
                 category
         );
         bookService.saveOrUpdate(book);
-        /*Set<Book> categoryBooks = category.getBooks();
-        categoryBooks.add(book);
-        category.setBooks(categoryBooks);
-        categoryService.saveOrUpdate(category);         */
+        return "redirect:/" + userLogin + "/editBook/" + title;
+    }
+
+    @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}", method = RequestMethod.GET)
+    public String updateBook (Principal principal, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle, ModelMap modelMap) {
+
+        User user = userService.findByLogin(principal.getName());
+        Book book = bookService.findByTitleAndUserId(bookTitle, user);
+        if (book.getChapters().size() == 0) {
+            createChapter(book, 1);
+            book = bookService.findByTitleAndUserId(bookTitle, user);
+        }
         modelMap.addAttribute("book", book);
-        /*modelMap.addAttribute("category", category);
-        modelMap.addAttribute("categoryIndex", categoryIndex);  */
         return "edit_book";
     }
+
+    private void createChapter (Book book, int number) {
+        Chapter chapter = new Chapter(
+                UtilStrings.STANDARD_CHAPTER_NAME + number,
+                "Input text here",
+                book
+        );
+        chapterService.saveOrUpdate(chapter);
+    }
+
 
     //  Book edition
 
 
+    //  Show message
 
-
+    private String showFlashMessage (String flashMessage, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("flashMessage", flashMessage);
+        return "home";
+    }
 
 /*
 

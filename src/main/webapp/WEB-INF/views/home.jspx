@@ -16,20 +16,22 @@
 
 
     <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
-        <div style = "float: left">
+
+        <br/>
+        <div style = "float: right">
             <a href="${securityLogout}"> Logout</a>
         </div>
         <br/>
-        ${user.name}
+        Hello, ${user.name}
         <br/>
         Your books
         <br/>
         <c:forEach items="${user.books}" var="userBook">
-            <a href="/showBook/${userBook.id}">${userBook.title}</a>
+            <a href="${user.login}/showBook/${userBook.id}">${userBook.title}</a>
             <br/>
         </c:forEach>
         <br/>
-        <a href="/bookCreation">Create Book</a>
+        <a href="/${user.login}/bookCreation">Create Book</a>
 
     </sec:authorize>
 

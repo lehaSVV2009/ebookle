@@ -3,6 +3,8 @@ package com.ebookle.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,6 +42,9 @@ public class Book implements Entity, Serializable {
     @ManyToOne
     @JoinColumn(name = "CATEGORY_ID")
     private Category category;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Chapter> chapters = new HashSet<Chapter>();
 
     /*@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Chapter> chapters;
@@ -130,6 +135,14 @@ public class Book implements Entity, Serializable {
 
     public void setCategory (Category category) {
         this.category = category;
+    }
+
+    public Set<Chapter> getChapters () {
+        return chapters;
+    }
+
+    public void setChapters (Set<Chapter> chapters) {
+        this.chapters = chapters;
     }
     /*public Category getCategory () {
         return category;

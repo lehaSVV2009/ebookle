@@ -2,6 +2,7 @@ package com.ebookle.service;
 
 import com.ebookle.dao.BookDAO;
 import com.ebookle.entity.Book;
+import com.ebookle.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,5 +51,12 @@ public class BookService {
     public List<Book> findAllWithAuthors () {
         return bookDAO.findAllWithAuthors();
     }
+
+
+    @Transactional(readOnly = true)
+    public Book findByTitleAndUserId (String title, User user) {
+        return bookDAO.findByTitleAndUserId(title, user);
+    }
+
 
 }

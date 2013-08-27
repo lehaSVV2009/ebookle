@@ -1,6 +1,7 @@
 package com.ebookle.dao;
 
 import com.ebookle.entity.Book;
+import com.ebookle.entity.User;
 
 import java.util.List;
 
@@ -25,4 +26,5 @@ public interface BookDAO {
 
     public Book findByIdWithAuthor (int id);
 
+    public Book findByTitleAndUserId (String title, User user);
 }

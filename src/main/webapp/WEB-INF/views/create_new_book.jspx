@@ -29,7 +29,7 @@
     <spring:message code="create_book_button_text" var="createBookButtonText"/>
     <spring:message code="cancel" var="cancel"/>
 
-    <form action="/createNewBook" method="post">
+    <form action="/${userLogin}/createNewBook" method="post">
         <h2>${createBookLabel}</h2>
         <br/>
         ${titleLabel}
