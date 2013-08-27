@@ -238,34 +238,53 @@ public class MainController {
                 category
         );
         bookService.saveOrUpdate(book);
-        return "redirect:/" + userLogin + "/editBook/" + title;
+        return "redirect:/" + userLogin + "/editBook/" + title + "/1";
     }
 
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}", method = RequestMethod.GET)
-    public String updateBook (Principal principal, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle, ModelMap modelMap) {
+    @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/{chapterNumber}", method = RequestMethod.GET)
+    public String updateBook (Principal principal, @PathVariable("chapterNumber") Integer chapterNumber, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle, ModelMap modelMap) {
 
         User user = userService.findByLogin(principal.getName());
         Book book = bookService.findByTitleAndUserId(bookTitle, user);
         if (book.getChapters().size() == 0) {
             createChapter(book, 1);
             book = bookService.findByTitleAndUserId(bookTitle, user);
+            chapterNumber = 1;
         }
+        //  TODO: changeBookVersion
+        //  TODO: change chapter version
         modelMap.addAttribute("book", book);
+        modelMap.addAttribute("userLogin", userLogin);
+        modelMap.addAttribute("currentChapter", book.getChapters().get(chapterNumber - 1));
         return "edit_book";
     }
+
+    @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/createNewChapter", method = RequestMethod.GET)
+    public String createNewChapter (Principal principal, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle) {
+
+        User user = userService.findByLogin(principal.getName());
+        Book book = bookService.findByTitleAndUserId(bookTitle, user);
+        createChapter(book, book.getChapters().size() + 1);
+        //  TODO: changeBookVersion
+        return ("redirect:/" + userLogin + "/editBook/" + bookTitle + "/" + (book.getChapters().size() + 1));
+    }
+
 
     private void createChapter (Book book, int number) {
         Chapter chapter = new Chapter(
                 UtilStrings.STANDARD_CHAPTER_NAME + number,
                 "Input text here",
-                book
+                book,
+                number
         );
         chapterService.saveOrUpdate(chapter);
     }
 
 
     //  Book edition
+
 
 
     //  Show message

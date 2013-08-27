@@ -7,8 +7,8 @@
 -->
 <html xmlns:form="http://www.springframework.org/tags/form">
 <head>
-    <title>Edit Book</title>
     <link rel="stylesheet" type="text/css" media="screen" href="../../web-resources/css/dark.css"/>
+    <title>Edit Book</title>
 
 </head>
 <body>
@@ -25,6 +25,18 @@
 
     <h2>${book.title} </h2>
 
+    <a href="/${userLogin}/editBook/${bookTitle}/createNewChapter">Create New Chapter</a>
+
+    <h2>${currentChapter.title}</h2>
+    <br/>
+
+    <textarea></textarea>
+    <!--<form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}">
+        <te
+    </form>
+    -->
+
+    <!--<a href="${userLogin}/editBook/${book.title}/createNewChapter">Create Chapter</a>   -->
     <br/>
 
 

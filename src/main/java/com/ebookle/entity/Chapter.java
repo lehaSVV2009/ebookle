@@ -30,6 +30,9 @@ public class Chapter implements Entity, Serializable {
     @Column(name = "text")
     private String text;
 
+    @Column(name = "chapterNumber")
+    private int chapterNumber;
+
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
     private Book book;
@@ -37,10 +40,11 @@ public class Chapter implements Entity, Serializable {
     public Chapter() {
     }
 
-    public Chapter (String title, String text, Book book) {
+    public Chapter (String title, String text, Book book, int chapterNumber) {
         this.title = title;
         this.text = text;
         this.book = book;
+        this.chapterNumber = chapterNumber;
     }
 
     public Integer getId () {
@@ -49,6 +53,14 @@ public class Chapter implements Entity, Serializable {
 
     public void setId (Integer id) {
         this.id = id;
+    }
+
+    public int getChapterNumber () {
+        return chapterNumber;
+    }
+
+    public void setChapterNumber (int chapterNumber) {
+        this.chapterNumber = chapterNumber;
     }
 
     public Integer getVersion () {

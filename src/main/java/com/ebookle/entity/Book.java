@@ -3,7 +3,9 @@ package com.ebookle.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -44,7 +46,7 @@ public class Book implements Entity, Serializable {
     private Category category;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Chapter> chapters = new HashSet<Chapter>();
+    private List<Chapter> chapters = new ArrayList<Chapter>();
 
     /*@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Chapter> chapters;
@@ -79,14 +81,6 @@ public class Book implements Entity, Serializable {
         this.user = user;
     }
 
-    /*public List<Chapter> getChapters () {
-        return chapters;
-    }
-
-    public void setChapters (List<Chapter> chapters) {
-        this.chapters = chapters;
-    }
-    */
     @Override
     public void setId (Integer id) {
         this.id = id;
@@ -137,14 +131,15 @@ public class Book implements Entity, Serializable {
         this.category = category;
     }
 
-    public Set<Chapter> getChapters () {
+    public List<Chapter> getChapters () {
         return chapters;
     }
 
-    public void setChapters (Set<Chapter> chapters) {
+    public void setChapters (List<Chapter> chapters) {
         this.chapters = chapters;
     }
-    /*public Category getCategory () {
+
+/*public Category getCategory () {
         return category;
     }
 
