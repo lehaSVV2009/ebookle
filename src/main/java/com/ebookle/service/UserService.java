@@ -42,7 +42,7 @@ public class UserService {
     }
 
     @Transactional
-    public List<User> findAllWithDetails() {
+    public List<User> findAllWithDetails () {
         return userDAO.findAllWithDetails();
     }
 
@@ -52,9 +52,13 @@ public class UserService {
     }
 
     @Transactional
-    public User findByLogin(String login) {
+    public User findByLogin (String login) {
         return userDAO.findByLogin(login);
     }
 
+    @Transactional(readOnly = true)
+    public List<User> findAllNotActivatedByKey (String key) {
+        return userDAO.findAllNotActivatedByKey(key);
+    }
 
 }

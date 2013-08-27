@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -61,6 +62,7 @@ public class RegistrationService {
                 false
         );
         userService.saveOrUpdate(user);
+        //  TODO: change mail
         sendKeyToMail("lehaSVV2009test@gmail.com",
                 "Registration to ebookle.com",
                 "http://localhost:8080/registration_success?key=" + userKey
@@ -75,6 +77,13 @@ public class RegistrationService {
     }
 
     public boolean activateUser(String key) {
+        List<User> users = userService.findAllNotActivatedByKey(key);
+        if (users.size() != 1) {
+            return false;
+        }
+        User user = users.get(0);
+        user.setActivated(true);
+        userService.saveOrUpdate(user);
         return true;
     }
 }

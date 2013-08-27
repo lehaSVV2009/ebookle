@@ -28,4 +28,6 @@ public interface UserDAO {
 
     public User findByLogin (String login);
 
+    public List<User> findAllNotActivatedByKey (String key);
+
 }

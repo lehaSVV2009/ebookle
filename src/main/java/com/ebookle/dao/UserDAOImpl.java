@@ -82,5 +82,13 @@ public class UserDAOImpl implements UserDAO{
                 .uniqueResult();
     }
 
+    @Override
+    public List<User> findAllNotActivatedByKey (String key) {
+        return getSession().createCriteria(User.class)
+                .add(Restrictions.eq("registeredKey", key))
+                .add(Restrictions.eq("isActivated", new Boolean(false)))
+                .list();
+    }
+
 
 }

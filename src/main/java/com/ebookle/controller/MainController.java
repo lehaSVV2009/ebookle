@@ -99,11 +99,9 @@ public class MainController {
                 if (user == null) {
                     return showFlashMessage("Bad database", redirectAttributes);
                 }
-
                 modelMap.addAttribute("user", user);
                 modelMap.addAttribute("userBooks", user.getBooks());
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -132,16 +130,13 @@ public class MainController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/registration_success?", method = RequestMethod.GET)
-    @ResponseBody
+    @RequestMapping(value = "/registration_success", method = RequestMethod.GET)
     public String registrationSuccess (ModelMap modelMap, @RequestParam("key") String key/*@RequestHeader("key") String userKey*/) {
 
-        //TODO: registration of User(get headers)
-        modelMap.addAttribute("registrationSuccess", key);
-        /*if (registrationService.activateUser("someKey")) {
-            modelMap.addAttribute("registrationSuccess", "Registration was successful!");
+        if (registrationService.activateUser(key)) {
+            modelMap.addAttribute("registrationSuccess", "Вы подтвердили свой аккаунт, теперь вы можете зайти на сайт, используя свой логин и пароль");
             return "registration_success";
-        } */
+        }
         return "registration_failed";
     }
 
