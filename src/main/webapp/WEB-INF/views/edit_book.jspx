@@ -7,7 +7,7 @@
 -->
 <html xmlns:form="http://www.springframework.org/tags/form">
 <head>
-    <link rel="stylesheet" type="text/css" media="screen" href="../../web-resources/css/dark.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:8080/web-resources/css/dark.css"/>
     <title>Edit Book</title>
 
 </head>
@@ -22,38 +22,68 @@
     <jsp:output omit-xml-declaration="yes"/>
 
 
-
     <h2>${book.title} </h2>
 
     <a href="/${userLogin}/editBook/${bookTitle}/createNewChapter">Create New Chapter</a>
 
 
-    <h2>${currentChapter.title}</h2>
-    <br/>
+    <c:choose>
 
 
-    <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/save" method="post">
-        <textarea name="text">${currentChapter.text}</textarea>
+        <h2>${currentChapter.title}</h2>
         <br/>
-        <input type="submit" value="Save Chapter"/>
-    </form>
-    <!--<form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}">
-        <te
-    </form>
-    -->
 
-    <!--<a href="${userLogin}/editBook/${book.title}/createNewChapter">Create Chapter</a>   -->
-    <br/>
+        <c:choose>
+            <c:when test="${userAction eq 'edit'}">
 
+                <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/save" method="post">
+                    <textarea name="text">${currentChapter.text}</textarea>
+                    <br/>
+                    <input type="submit" value="Save Chapter"/>
+                </form>
 
-    <c:forEach items="${book.chapters}" var="chapter">
-        <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}" method="get">
-            <input type="submit" value="${chapter.title}"/>
+                <br/>
+
+            </c:when>
+
+            <c:otherwise>
+
+                <textarea disabled="disabled">${currentChapter.text}</textarea>
+                <br/>
+            </c:otherwise>
+        </c:choose>
+
+        <!--<form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show" method="post">
+            <input type="submit" value="Show"/>
+        </form>    -->
+        <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}" method="get">
+            <input type="submit" value="Edit"/>
         </form>
-        <br/>
-    </c:forEach>
-    <br/>
 
+        <br/>
+
+        <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show" method="get">
+            <input type="submit" value="Show"/>
+        </form>
+
+        <!--<form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}">
+            <te
+        </form>
+        -->
+
+        <!--<a href="${userLogin}/editBook/${book.title}/createNewChapter">Create Chapter</a>   -->
+        <br/>
+
+
+        <c:forEach items="${book.chapters}" var="chapter">
+            <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}" method="get">
+                <input type="submit" value="${chapter.title}"/>
+            </form>
+            <br/>
+        </c:forEach>
+        <br/>
+
+    </c:choose>
 
     <!--
     <a href="/createChapter">Create Chapter</a>
@@ -73,7 +103,6 @@
     -->
     <br/>
     <br/>
-
 
 
 </div>

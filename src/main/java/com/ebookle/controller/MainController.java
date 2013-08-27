@@ -45,8 +45,6 @@ public class MainController {
     private ChapterService chapterService;
     @Autowired
     private CategoryService categoryService;    */
-    @Autowired
-    private Service service;
 
     @Autowired
     private BookCreator bookCreator;
@@ -60,7 +58,7 @@ public class MainController {
     //later: add rus internationalization
     //model.put(JRParameter.REPORT_RESOURCE_BUNDLE , resourceBundle);
 
-    private User createRandomUser () {
+    /*private User createRandomUser () {
         User user = new User(
                 service.createRandomKey(),
                 service.createRandomKey(),
@@ -82,7 +80,7 @@ public class MainController {
                 new Category()
         );
     }
-
+    */
     @RequestMapping("/")
     public String goHome (ModelMap modelMap, Principal principal, RedirectAttributes redirectAttributes) {
 
@@ -108,7 +106,7 @@ public class MainController {
         return "home";
     }
 
-    @RequestMapping("/registration")
+    @RequestMapping(value = "/registration")
     public String goToRegistration (ModelMap modelMap) {
         return "registration";
     }
@@ -249,8 +247,12 @@ public class MainController {
         modelMap.addAttribute("book", book);
         modelMap.addAttribute("userLogin", userLogin);
         modelMap.addAttribute("currentChapter", book.getChapters().get(chapterNumber - 1));
+        modelMap.addAttribute("userAction", "edit");
+        modelMap.addAttribute("person", "ownUser");
         return "edit_book";
     }
+
+    //  Chapter Edition
 
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/createNewChapter", method = RequestMethod.GET)
@@ -275,7 +277,6 @@ public class MainController {
         return ("redirect:/" + userLogin + "/editBook/" + bookTitle + "/" + chapterNumber);
     }
 
-
     private void createChapter (Book book, int number) {
         Chapter chapter = new Chapter(
                 UtilStrings.STANDARD_CHAPTER_NAME + number,
@@ -286,37 +287,29 @@ public class MainController {
         chapterService.saveOrUpdate(chapter);
     }
 
+    //  Show Book
 
-    //  Book edition
+    @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/{chapterNumber}/show", method = RequestMethod.GET)
+    public String showChapter (Principal principal, @PathVariable("chapterNumber") Integer chapterNumber, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle, ModelMap modelMap) {
 
+        User user = userService.findByLogin(principal.getName());
+        Book book = bookService.findByTitleAndUserIdWithChapters(bookTitle, user);
+        Chapter currentChapter = book.getChapters().get(chapterNumber - 1);
+        modelMap.addAttribute("book", book);
+        modelMap.addAttribute("userLogin", userLogin);
+        modelMap.addAttribute("currentChapter", currentChapter);
+        modelMap.addAttribute("userAction", "show");
+        //  TODO: if principal == null  "guest"
+        //  TODO: if principal.getName != userLogin   "notOwnUser"
+        modelMap.addAttribute("person", "ownUser");
+        return "edit_book";
+    }
 
-
-    //  Show message
+    //  support
 
     private String showFlashMessage (String flashMessage, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("flashMessage", flashMessage);
         return "home";
     }
 
-/*
-
-    @RequestMapping("/addUser")
-    public String addUser(RedirectAttributes redirectAttributes) {
-
-        try {
-            User user = new User();
-            user.setLogin("login4");
-            user.setPassword("pass4");
-            user.setEmail("l4@gmail.com");
-            user.setActivated(false);
-            user.setName("Аможеталексей");
-            user.setSurname("Аможеторока");
-            userService.saveOrUpdate(user);
-            redirectAttributes.addFlashAttribute("message", "User added!");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "redirect:/";
-    }
-*/
 }
