@@ -70,8 +70,16 @@ public class BookDAOImpl implements BookDAO{
     }
 
     @Override
-    public Book findByTitleAndUserId (String title, User user) {
+    public Book findByTitleAndUserIdWithChapters (String title, User user) {
         return (Book) getSession().createCriteria(Book.class).setFetchMode("chapters", FetchMode.EAGER)
+                .add(Restrictions.eq("user", user))
+                .add(Restrictions.eq("title", title))
+                .uniqueResult();
+    }
+
+    @Override
+    public Book findByTitleAndUserId (String title, User user) {
+        return (Book) getSession().createCriteria(Book.class)
                 .add(Restrictions.eq("user", user))
                 .add(Restrictions.eq("title", title))
                 .uniqueResult();

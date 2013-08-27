@@ -1,6 +1,7 @@
 package com.ebookle.service;
 
 import com.ebookle.dao.ChapterDAO;
+import com.ebookle.entity.Book;
 import com.ebookle.entity.Chapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,10 @@ public class ChapterService {
     @Transactional(readOnly = true)
     public Chapter findById (int id) {
         return chapterDAO.findById(id);
+    }
+    @Transactional(readOnly = true)
+    public Chapter findByBookAndChapterNumber(Book book, Integer chapterNumber) {
+        return chapterDAO.findByBookAndChapterNumber(book, chapterNumber);
     }
 
 }

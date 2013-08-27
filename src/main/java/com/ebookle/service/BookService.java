@@ -54,9 +54,13 @@ public class BookService {
 
 
     @Transactional(readOnly = true)
+    public Book findByTitleAndUserIdWithChapters (String title, User user) {
+        return bookDAO.findByTitleAndUserIdWithChapters(title, user);
+    }
+
+    @Transactional(readOnly = true)
     public Book findByTitleAndUserId (String title, User user) {
         return bookDAO.findByTitleAndUserId(title, user);
     }
-
 
 }

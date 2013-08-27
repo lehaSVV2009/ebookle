@@ -26,5 +26,7 @@ public interface BookDAO {
 
     public Book findByIdWithAuthor (int id);
 
+    public Book findByTitleAndUserIdWithChapters (String title, User user);
+
     public Book findByTitleAndUserId (String title, User user);
 }

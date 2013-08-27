@@ -27,10 +27,16 @@
 
     <a href="/${userLogin}/editBook/${bookTitle}/createNewChapter">Create New Chapter</a>
 
+
     <h2>${currentChapter.title}</h2>
     <br/>
 
-    <textarea></textarea>
+
+    <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/save" method="post">
+        <textarea name="text">${currentChapter.text}</textarea>
+        <br/>
+        <input type="submit" value="Save Chapter"/>
+    </form>
     <!--<form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}">
         <te
     </form>
@@ -41,7 +47,9 @@
 
 
     <c:forEach items="${book.chapters}" var="chapter">
-        ${chapter.title}
+        <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}" method="get">
+            <input type="submit" value="${chapter.title}"/>
+        </form>
         <br/>
     </c:forEach>
     <br/>

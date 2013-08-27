@@ -1,8 +1,10 @@
 package com.ebookle.dao;
 
+import com.ebookle.entity.Book;
 import com.ebookle.entity.Chapter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -51,6 +53,14 @@ public class ChapterDAOImpl implements ChapterDAO{
     @Override
     public Chapter findById (int id) {
         return (Chapter) getSession().get(Chapter.class, id);
+    }
+
+    @Override
+    public Chapter findByBookAndChapterNumber (Book book, Integer chapterNumber) {
+        return (Chapter) getSession().createCriteria(Chapter.class)
+                .add(Restrictions.eq("book", book))
+                .add(Restrictions.eq("chapterNumber", chapterNumber))
+                .uniqueResult();
     }
 
 }

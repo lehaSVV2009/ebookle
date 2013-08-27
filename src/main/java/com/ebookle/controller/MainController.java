@@ -11,8 +11,6 @@ import com.ebookle.entity.User;
 import com.ebookle.service.*;
 import com.ebookle.util.UtilStrings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,9 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -136,15 +132,16 @@ public class MainController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/registration_success", method = RequestMethod.GET)
+    @RequestMapping(value = "/registration_success?", method = RequestMethod.GET)
     @ResponseBody
-    public String registrationSuccess (ModelMap modelMap/*@RequestHeader("key") String userKey*/) {
+    public String registrationSuccess (ModelMap modelMap, @RequestParam("key") String key/*@RequestHeader("key") String userKey*/) {
 
         //TODO: registration of User(get headers)
-        if (registrationService.activateUser("someKey")) {
+        modelMap.addAttribute("registrationSuccess", key);
+        /*if (registrationService.activateUser("someKey")) {
             modelMap.addAttribute("registrationSuccess", "Registration was successful!");
             return "registration_success";
-        }
+        } */
         return "registration_failed";
     }
 
@@ -246,10 +243,10 @@ public class MainController {
     public String updateBook (Principal principal, @PathVariable("chapterNumber") Integer chapterNumber, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle, ModelMap modelMap) {
 
         User user = userService.findByLogin(principal.getName());
-        Book book = bookService.findByTitleAndUserId(bookTitle, user);
+        Book book = bookService.findByTitleAndUserIdWithChapters(bookTitle, user);
         if (book.getChapters().size() == 0) {
             createChapter(book, 1);
-            book = bookService.findByTitleAndUserId(bookTitle, user);
+            book = bookService.findByTitleAndUserIdWithChapters(bookTitle, user);
             chapterNumber = 1;
         }
         //  TODO: changeBookVersion
@@ -265,10 +262,22 @@ public class MainController {
     public String createNewChapter (Principal principal, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle) {
 
         User user = userService.findByLogin(principal.getName());
-        Book book = bookService.findByTitleAndUserId(bookTitle, user);
+        Book book = bookService.findByTitleAndUserIdWithChapters(bookTitle, user);
         createChapter(book, book.getChapters().size() + 1);
         //  TODO: changeBookVersion
         return ("redirect:/" + userLogin + "/editBook/" + bookTitle + "/" + (book.getChapters().size() + 1));
+    }
+
+    @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/{chapterNumber}/save", method = RequestMethod.POST)
+    public String saveChapter (@RequestParam("text") String text, Principal principal, @PathVariable("chapterNumber") Integer chapterNumber, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle, ModelMap modelMap) {
+
+        User user = userService.findByLogin(principal.getName());
+        Book book = bookService.findByTitleAndUserId(bookTitle, user);
+        Chapter chapter = chapterService.findByBookAndChapterNumber(book, chapterNumber);
+        chapter.setText(text);
+        chapterService.saveOrUpdate(chapter);
+        return ("redirect:/" + userLogin + "/editBook/" + bookTitle + "/" + chapterNumber);
     }
 
 

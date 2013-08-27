@@ -1,6 +1,7 @@
 package com.ebookle.dao;
 
 
+import com.ebookle.entity.Book;
 import com.ebookle.entity.Chapter;
 
 import java.util.List;
@@ -21,5 +22,7 @@ public interface ChapterDAO {
     public boolean delete (int id);
 
     public Chapter findById (int id);
+
+    public Chapter findByBookAndChapterNumber (Book book, Integer chapterNumber);
 
 }
