@@ -24,64 +24,82 @@
 
     <h2>${book.title} </h2>
 
-    <a href="/${userLogin}/editBook/${bookTitle}/createNewChapter">Create New Chapter</a>
 
 
     <c:choose>
 
+        <!--for Users who can edit -->
 
-        <h2>${currentChapter.title}</h2>
-        <br/>
+        <c:when test="${person eq 'ownUser'}">
 
-        <c:choose>
-            <c:when test="${userAction eq 'edit'}">
-
-                <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/save" method="post">
-                    <textarea name="text">${currentChapter.text}</textarea>
-                    <br/>
-                    <input type="submit" value="Save Chapter"/>
-                </form>
-
-                <br/>
-
-            </c:when>
-
-            <c:otherwise>
-
-                <textarea disabled="disabled">${currentChapter.text}</textarea>
-                <br/>
-            </c:otherwise>
-        </c:choose>
-
-        <!--<form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show" method="post">
-            <input type="submit" value="Show"/>
-        </form>    -->
-        <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}" method="get">
-            <input type="submit" value="Edit"/>
-        </form>
-
-        <br/>
-
-        <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show" method="get">
-            <input type="submit" value="Show"/>
-        </form>
-
-        <!--<form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}">
-            <te
-        </form>
-        -->
-
-        <!--<a href="${userLogin}/editBook/${book.title}/createNewChapter">Create Chapter</a>   -->
-        <br/>
-
-
-        <c:forEach items="${book.chapters}" var="chapter">
-            <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}" method="get">
-                <input type="submit" value="${chapter.title}"/>
-            </form>
+            <h2>${currentChapter.title}</h2>
             <br/>
-        </c:forEach>
-        <br/>
+
+            <a href="/${userLogin}/editBook/${bookTitle}/createNewChapter">Create New Chapter</a>
+
+
+            <c:choose>
+
+                <c:when test="${userAction eq 'edit'}">
+
+                    <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/save"
+                          method="post">
+                        <textarea name="text">${currentChapter.text}</textarea>
+                        <br/>
+                        <input type="submit" value="Save Chapter"/>
+                    </form>
+
+                    <br/>
+
+                </c:when>
+
+                <c:otherwise>
+
+                    <textarea disabled="disabled">${currentChapter.text}</textarea>
+                    <br/>
+                </c:otherwise>
+            </c:choose>
+
+            <!--<form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show" method="post">
+                <input type="submit" value="Show"/>
+            </form>    -->
+            <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}" method="get">
+                <input type="submit" value="Edit"/>
+            </form>
+
+            <br/>
+
+            <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show" method="get">
+                <input type="submit" value="Show"/>
+            </form>
+
+            <!--<form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}">
+                <te
+            </form>
+            -->
+
+            <!--<a href="${userLogin}/editBook/${book.title}/createNewChapter">Create Chapter</a>   -->
+            <br/>
+
+
+            <c:forEach items="${book.chapters}" var="chapter">
+                <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}" method="get">
+                    <input type="submit" value="${chapter.title}"/>
+                </form>
+                <br/>
+            </c:forEach>
+            <br/>
+
+        </c:when>
+
+        <c:when test="${person eq 'notOwnUser'}">
+            Пользователь для просмотра
+        </c:when>
+
+        <c:when test="${person eq 'guest'}">
+            Гость
+        </c:when>
+
 
     </c:choose>
 

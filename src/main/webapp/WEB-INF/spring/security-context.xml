@@ -10,6 +10,7 @@
         <intercept-url pattern="/welcome" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')"/>
         <intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/create_new_book" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')"/>
+        <intercept-url pattern="/*/editBook/*/*" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" />
         <form-login login-page="/home" default-target-url="/welcome"
                     authentication-failure-url="/login_fail"/>
         <logout logout-success-url="/logout"/>

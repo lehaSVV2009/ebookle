@@ -28,5 +28,7 @@
 
     <definition name="edit_book" template="/WEB-INF/views/edit_book.jspx"/>
 
+    <definition name="error" template="/WEB-INF/views/error.jspx"/>
+
 
 </tiles-definitions>

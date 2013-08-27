@@ -106,6 +106,11 @@ public class MainController {
         return "home";
     }
 
+    @RequestMapping("/home")
+    public String goHome() {
+        return "redirect:/";
+    }
+
     @RequestMapping(value = "/registration")
     public String goToRegistration (ModelMap modelMap) {
         return "registration";
@@ -235,6 +240,11 @@ public class MainController {
     @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/{chapterNumber}", method = RequestMethod.GET)
     public String updateBook (Principal principal, @PathVariable("chapterNumber") Integer chapterNumber, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle, ModelMap modelMap) {
 
+        if (principal == null
+                || ! principal.getName().equals(userLogin)) {
+            modelMap.addAttribute("error", "Страница недоступна!");
+            return "error";
+        }
         User user = userService.findByLogin(principal.getName());
         Book book = bookService.findByTitleAndUserIdWithChapters(bookTitle, user);
         if (book.getChapters().size() == 0) {
@@ -292,16 +302,21 @@ public class MainController {
     @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/{chapterNumber}/show", method = RequestMethod.GET)
     public String showChapter (Principal principal, @PathVariable("chapterNumber") Integer chapterNumber, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle, ModelMap modelMap) {
 
-        User user = userService.findByLogin(principal.getName());
+
+        User user = userService.findByLogin(userLogin);
         Book book = bookService.findByTitleAndUserIdWithChapters(bookTitle, user);
         Chapter currentChapter = book.getChapters().get(chapterNumber - 1);
         modelMap.addAttribute("book", book);
         modelMap.addAttribute("userLogin", userLogin);
         modelMap.addAttribute("currentChapter", currentChapter);
         modelMap.addAttribute("userAction", "show");
-        //  TODO: if principal == null  "guest"
-        //  TODO: if principal.getName != userLogin   "notOwnUser"
-        modelMap.addAttribute("person", "ownUser");
+        if (principal == null) {
+            modelMap.addAttribute("person", "guest");
+        } else if (!userLogin.equals(principal.getName())) {
+            modelMap.addAttribute("person", "notOwnUser");
+        } else {
+            modelMap.addAttribute("person", "ownUser");
+        }
         return "edit_book";
     }
 
