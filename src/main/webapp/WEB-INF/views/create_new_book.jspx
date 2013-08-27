@@ -42,18 +42,20 @@
         <br/>
         ${categoryLabel}
         <br/>
-        <select name="category">
-            <option value="cat1">cat1</option>
-            <option value="cat2">cat2</option>
-            <option value="cat3">cat3</option>
-        </select>
+        <c:if test="${not empty categories}">
+            <select name="category">
+
+                <c:forEach items="${categories}" var="categoryItem">
+                    <option value="${categoryItem.id}">${categoryItem.name}</option>
+                </c:forEach>
+
+            </select>
+        </c:if>
         <br/>
         <input type="submit" value="${createBookButtonText}"/>
 
     </form>
     <br/>
-
-
 
 
 </div>

@@ -30,15 +30,14 @@ public class CategoryService {
         return categoryDAO.findAll();
     }
 
-    @Transactional
+    /*@Transactional
     public boolean delete (int id) {
         return categoryDAO.delete(id);
     }
-
+*/
     @Transactional(readOnly = true)
     public Category findById (int id) {
         return categoryDAO.findById(id);
     }
-
 
 }

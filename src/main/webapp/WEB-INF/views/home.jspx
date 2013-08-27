@@ -29,7 +29,7 @@
             <br/>
         </c:forEach>
         <br/>
-        <a href="/goToBookCreation">Create Book</a>
+        <a href="/bookCreation">Create Book</a>
 
     </sec:authorize>
 

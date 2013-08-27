@@ -59,10 +59,11 @@ public class Book implements Entity, Serializable {
     public Book () {
     }
 
-    public Book (String title, String description, User user) {
+    public Book (String title, String description, User user, Category category) {
         this.title = title;
         this.description = description;
         this.user = user;
+        this.category = category;
     }
 
     public User getUser () {
@@ -122,7 +123,15 @@ public class Book implements Entity, Serializable {
     public void setRating (int rating) {
         this.rating = rating;
     }
-/*public Category getCategory () {
+
+    public Category getCategory () {
+        return category;
+    }
+
+    public void setCategory (Category category) {
+        this.category = category;
+    }
+    /*public Category getCategory () {
         return category;
     }
 

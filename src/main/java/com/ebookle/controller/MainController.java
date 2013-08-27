@@ -5,6 +5,7 @@ import com.ebookle.entity.Book;
 import com.ebookle.entity.Category;
 import com.ebookle.entity.Chapter;
 */
+import com.ebookle.entity.Category;
 import com.ebookle.entity.User;
 import com.ebookle.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,6 +39,7 @@ public class MainController {
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private BookService bookService;
     /*@Autowired
@@ -46,6 +49,11 @@ public class MainController {
     @Autowired
     private Service service;
 
+    @Autowired
+    private BookCreator bookCreator;
+
+    @Autowired
+    private CategoryService categoryService;
     /*@Autowired
     private SimpleMailMessage preConfiguredMessage;
 
@@ -75,7 +83,8 @@ public class MainController {
         return new Book(
                 service.createRandomKey(),
                 service.createRandomKey(),
-                user
+                user,
+                new Category()
         );
     }
 
@@ -198,21 +207,36 @@ public class MainController {
     //  Book creation
 
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @RequestMapping(value = "/goToBookCreation", method = RequestMethod.GET)
-    public String goToBookCreation() {
+    @RequestMapping(value = "/bookCreation", method = RequestMethod.GET)
+    public String goToBookCreation(ModelMap modelMap) {
+        modelMap.addAttribute("categories", categoryService.findAll());
         return "create_new_book";
     }
 
-
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @RequestMapping(value = "/createNewBook", method = RequestMethod.POST)
-    public String createNewBook(@RequestParam("category") String categoryName, ModelMap modelMap) {
+    public String createNewBook(Principal principal, @RequestParam("title") String title, @RequestParam("description") String description, @RequestParam("category") String categoryIndex, ModelMap modelMap) {
 
-        modelMap.addAttribute("category", categoryName);
+        User user = userService.findByLogin(principal.getName());
+        Category category = categoryService.findById(Integer.parseInt(categoryIndex));//findByName()
+        Book book = new Book(
+                title,
+                description,
+                user,
+                category
+        );
+        bookService.saveOrUpdate(book);
+        /*Set<Book> categoryBooks = category.getBooks();
+        categoryBooks.add(book);
+        category.setBooks(categoryBooks);
+        categoryService.saveOrUpdate(category);         */
+        modelMap.addAttribute("book", book);
+        /*modelMap.addAttribute("category", category);
+        modelMap.addAttribute("categoryIndex", categoryIndex);  */
         return "edit_book";
     }
 
-
+    //  Book edition
 
 
 
