@@ -1,0 +1,32 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+
+    <definition name="default" template="/WEB-INF/views/default.jspx">
+        <put-attribute name="header" value="/WEB-INF/views/header.jspx"/>
+        <put-attribute name="menu" value="/WEB-INF/views/menu.jspx"/>
+        <put-attribute name="footer" value="/WEB-INF/views/footer.jspx"/>
+    </definition>
+
+    <definition name="home" extends="default">
+        <put-attribute name="body" value="/WEB-INF/views/home.jspx"/>
+    </definition>
+
+    <definition name="welcome" template="/WEB-INF/views/welcome.jspx"/>
+
+    <definition name="registration" template="/WEB-INF/views/registration.jspx"/>
+
+    <definition name="registration_success" template="/WEB-INF/views/registration_success.jspx"/>
+
+    <definition name="show_book" template="/WEB-INF/views/show_book.jspx"/>
+
+    <definition name="admin" template="/WEB-INF/views/admin.jspx"/>
+
+    <definition name="create_new_book" template="/WEB-INF/views/create_new_book.jspx"/>
+
+    <definition name="edit_book" template="/WEB-INF/views/edit_book.jspx"/>
+
+
+</tiles-definitions>

@@ -1,0 +1,35 @@
+<!--
+  Created by IntelliJ IDEA.
+  User: admin
+  Date: 25.08.13
+  Time: 1:57
+  To change this template use File | Settings | File Templates.
+-->
+<html>
+<head>
+    <title>Registration Success</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="../../web-resources/css/dark.css"/>
+
+</head>
+<body>
+
+
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:joda="http://www.joda.org/joda/time/tags"
+     xmlns:spring="http://www.springframework.org/tags"
+     version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+
+    <c:if test="${not empty registrationSuccess}">
+        ${registrationSuccess}
+        <br/>
+    </c:if>
+
+    <a href="/">Home</a>
+
+</div>
+
+</body>
+</html>

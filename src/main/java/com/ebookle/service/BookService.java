@@ -1,0 +1,54 @@
+package com.ebookle.service;
+
+import com.ebookle.dao.BookDAO;
+import com.ebookle.entity.Book;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: admin
+ * Date: 24.08.13
+ * Time: 4:21
+ * To change this template use File | Settings | File Templates.
+ */
+@Service
+public class BookService {
+
+    @Autowired
+    private BookDAO bookDAO;
+
+    @Transactional
+    public void saveOrUpdate (Book book) {
+        bookDAO.saveOrUpdate(book);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Book> findAll () {
+        return bookDAO.findAll();
+    }
+
+    @Transactional
+    public boolean delete (int id) {
+        return bookDAO.delete(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Book findById (int id) {
+        return bookDAO.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Book findByIdWithAuthor (int id) {
+        return bookDAO.findByIdWithAuthor(id);
+    }
+
+    @Transactional
+    public List<Book> findAllWithAuthors () {
+        return bookDAO.findAllWithAuthors();
+    }
+
+}

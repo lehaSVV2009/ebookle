@@ -1,0 +1,116 @@
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:joda="http://www.joda.org/joda/time/tags"
+     xmlns:spring="http://www.springframework.org/tags"
+     xmlns:sec="http://www.springframework.org/security/tags"
+     version="2.0" xmlns:form="http://www.springframework.org/tags/form">
+    <jsp:directive.page contentType="text/html; charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+
+    <c:url value='/j_spring_security_logout' var="securityLogout"/>
+
+    <spring:message code="home_text" var="homeText"/>
+    <spring:url value="/" var="homeUrl"/>
+
+    <a href="${homeUrl}">${homeText}</a>
+
+
+    <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
+        <div style = "float: left">
+            <a href="${securityLogout}"> Logout</a>
+        </div>
+        <br/>
+        ${user.name}
+        <br/>
+        Your books
+        <br/>
+        <c:forEach items="${user.books}" var="userBook">
+            <a href="/showBook/${userBook.id}">${userBook.title}</a>
+            <br/>
+        </c:forEach>
+        <br/>
+        <a href="/goToBookCreation">Create Book</a>
+
+    </sec:authorize>
+
+
+
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
+        <div style = "float: right">
+            <a href="/admin">Admin</a>
+        </div>
+    </sec:authorize>
+
+    Просто работает локалхост - трололол
+    <br/>
+
+    <c:if test="${not empty flashMessage}">
+        ${flashMessage}
+        <br/>
+    </c:if>
+
+    <c:if test="${not empty books}">
+
+        <table>
+
+            <tbody>
+            <c:forEach items="${books}" var="book">
+                <tr>
+                    <td><a href="/showBook/${book.id}">${book.title}</a></td>
+                    <!--<td>${book.description}</td>
+                    -->
+                    <!--<td>${book.user.name}</td>
+                    -->
+                    <td>${book.user.surname}</td>
+
+                </tr>
+
+            </c:forEach>
+            </tbody>
+        </table>
+    </c:if>
+    <c:url value='j_spring_security_check' var="securityCheck"/>
+
+    <form name='login_form' action="${securityCheck}"
+          method='POST'>
+
+        <table>
+            <tr>
+                <td>User:</td>
+                <td><input type='text' name='j_username' value=''/>
+                </td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type='password' name='j_password'/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan='2'><input name="submit" type="submit"
+                                       value="Sign in"/>
+                </td>
+            </tr>
+        </table>
+
+    </form>
+
+    <a href="/registration">Registration</a>
+
+    <span style="float: right">
+        <a href="?lang=en">en</a>
+        |
+        <a href="?lang=ru">ru</a>
+    </span>
+
+    <br/>
+
+    <span style="float: right">
+    <a href="?theme=default">def</a>
+    |
+    <a href="?theme=black">blk</a>
+    |
+    <a href="?theme=blue">blu</a>
+
+</span>
+
+</div>

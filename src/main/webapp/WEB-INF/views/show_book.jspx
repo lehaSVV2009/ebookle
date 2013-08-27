@@ -1,0 +1,53 @@
+<html xmlns:spring="http://www.springframework.org/tags">
+<head>
+    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="../../web-resources/css/dark.css"/>
+
+</head>
+<body>
+
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+
+    Просто работает локалхост - трололол
+    <br/>
+
+    <c:if test="${not empty book}">
+
+        <h1>${book.title}</h1>
+        <h2>${book.user.surname}</h2>
+
+    </c:if>
+
+    <spring:message code="home_text" var="homeText"/>
+    <spring:url value="/" var="homeUrl"/>
+
+    <a href="${homeUrl}">${homeText}</a>
+
+
+    <span style="float: right">
+        <a href="?lang=en">en</a>
+        |
+        <a href="?lang=ru">ru</a>
+    </span>
+
+    <br/>
+
+    <span style="float: right">
+    <a href="?theme=default">def</a>
+    |
+    <a href="?theme=black">blk</a>
+    |
+    <a href="?theme=blue">blu</a>
+
+</span>
+
+</div>
+
+
+</body>
+</html>
+
