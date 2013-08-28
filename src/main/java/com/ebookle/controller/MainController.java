@@ -183,13 +183,16 @@ public class MainController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/{userLogin}/showBook/{id}", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/{userLogin}/showBook/{id}", method = RequestMethod.GET)
     public String showBooks (@PathVariable("id") Integer id, ModelMap modelMap) {
 
         Book book = bookService.findByIdWithAuthor(id);
         modelMap.addAttribute("book", book);
         return "show_book";
     }
+    */
+
+    //  Administration
 
     @Secured("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -301,7 +304,6 @@ public class MainController {
 
     @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/{chapterNumber}/show", method = RequestMethod.GET)
     public String showChapter (Principal principal, @PathVariable("chapterNumber") Integer chapterNumber, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle, ModelMap modelMap) {
-
 
         User user = userService.findByLogin(userLogin);
         Book book = bookService.findByTitleAndUserIdWithChapters(bookTitle, user);

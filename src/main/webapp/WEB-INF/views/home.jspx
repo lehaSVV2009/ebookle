@@ -27,7 +27,7 @@
         Your books
         <br/>
         <c:forEach items="${user.books}" var="userBook">
-            <a href="${user.login}/showBook/${userBook.id}">${userBook.title}</a>
+            <a href="${user.login}/editBook/${userBook.title}/1">${userBook.title}</a>
             <br/>
         </c:forEach>
         <br/>
@@ -58,7 +58,7 @@
             <tbody>
             <c:forEach items="${books}" var="book">
                 <tr>
-                    <td><a href="/showBook/${book.id}">${book.title}</a></td>
+                    <td><a href="/${book.user.login}/editBook/${book.title}/1/show">${book.title}</a></td>
                     <!--<td>${book.description}</td>
                     -->
                     <!--<td>${book.user.name}</td>

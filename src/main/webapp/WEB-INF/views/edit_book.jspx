@@ -35,28 +35,43 @@
             <h2>${currentChapter.title}</h2>
             <br/>
 
-            <a href="/${userLogin}/editBook/${bookTitle}/createNewChapter">Create New Chapter</a>
 
 
             <c:choose>
 
                 <c:when test="${userAction eq 'edit'}">
 
+                    <a href="/${userLogin}/editBook/${bookTitle}/createNewChapter">Create New Chapter</a>
+
                     <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/save"
                           method="post">
                         <textarea name="text">${currentChapter.text}</textarea>
                         <br/>
                         <input type="submit" value="Save Chapter"/>
+
                     </form>
+
+                    <br/>
+                    <c:forEach items="${book.chapters}" var="chapter">
+                        <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}" method="get">
+                            <input type="submit" value="${chapter.title}"/>
+                        </form>
+                        <br/>
+                    </c:forEach>
 
                     <br/>
 
                 </c:when>
 
                 <c:otherwise>
-
                     <textarea disabled="disabled">${currentChapter.text}</textarea>
                     <br/>
+                    <c:forEach items="${book.chapters}" var="chapter">
+                        <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}/show" method="get">
+                            <input type="submit" value="${chapter.title}"/>
+                        </form>
+                        <br/>
+                    </c:forEach>
                 </c:otherwise>
             </c:choose>
 
@@ -81,24 +96,26 @@
             <!--<a href="${userLogin}/editBook/${book.title}/createNewChapter">Create Chapter</a>   -->
             <br/>
 
+        </c:when>
+
+        <c:otherwise>
+
+            <textarea disabled="disabled">${currentChapter.text}</textarea>
+            <br/>
 
             <c:forEach items="${book.chapters}" var="chapter">
-                <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}" method="get">
+                <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}/show" method="get">
                     <input type="submit" value="${chapter.title}"/>
                 </form>
                 <br/>
             </c:forEach>
             <br/>
 
-        </c:when>
+            <c:if test="${person eq 'notOwnUser'}">
+                Поставить лайк
+            </c:if>
 
-        <c:when test="${person eq 'notOwnUser'}">
-            Пользователь для просмотра
-        </c:when>
-
-        <c:when test="${person eq 'guest'}">
-            Гость
-        </c:when>
+        </c:otherwise>
 
 
     </c:choose>
