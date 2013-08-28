@@ -1,6 +1,7 @@
 package com.ebookle.service;
 
 import com.ebookle.entity.User;
+import com.ebookle.util.RandomKeyCreator;
 import com.ebookle.util.UtilStrings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
@@ -28,29 +29,9 @@ public class RegistrationService {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private Random random;
-
-    public String createRandomKey () {
-        return createUserKey(random.nextInt(20) + 20);
-    }
-
-    public String createUserKey (int passwordLength)
-    {
-        String valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder result = new StringBuilder();
-        int validLength = valid.length();
-        while (0 < passwordLength--) {
-            result.append(
-                    valid.charAt(
-                            random.nextInt(validLength)));
-        }
-        return result.toString();
-    }
-
     public void register(String login, String password, String email, String name, String surname) {
 
-        String userKey = createRandomKey();
+        String userKey = RandomKeyCreator.createRandomKey();
         User user = new User(
                 login,
                 password,

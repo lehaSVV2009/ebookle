@@ -3,6 +3,7 @@ package com.ebookle.service;
 import com.ebookle.entity.User;
 import com.ebookle.util.UtilStrings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,8 +20,13 @@ public class AdminService {
     @Autowired
     private UserService userService;
 
+    @Transactional
     public boolean removeUser(Integer id) {
         return userService.delete(id);
+    }
+
+    public List<User> getUsersHasRoleUser() {
+        return userService.findAllByRole(UtilStrings.USER_ROLE_TEXT);
     }
 
     public UserService getUserService () {
@@ -29,10 +35,6 @@ public class AdminService {
 
     public void setUserService (UserService userService) {
         this.userService = userService;
-    }
-
-    public List<User> getUsersHasRoleUser() {
-        return userService.findAllByRole(UtilStrings.USER_ROLE_TEXT);
     }
 
 }

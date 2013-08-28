@@ -10,7 +10,9 @@ package com.ebookle.util;
 public final class UtilStrings {
 
     public final static String USER_ROLE_TEXT = "ROLE_USER";
-
     public final static String STANDARD_CHAPTER_NAME = "Chapter";
 
+    public final static String BAD_INPUT = "Bad input!";
+    public final static String SEND_DATA_SUCCESS = "Data was send to your email!";
+    public final static String REGISTRATION_SUCCESS = "Вы подтвердили свой аккаунт, теперь вы можете зайти на сайт, используя свой логин и пароль";
 }
