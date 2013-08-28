@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div id="footer"
+     xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:spring="http://www.springframework.org/tags"
+     version="2.0">
+
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+
+    <span style="float: right">
+        <a href="?lang=en">en</a>
+        |
+        <a href="?lang=ru">ru</a>
+    </span>
+
+    <br/>
+
+    <span style="float: right">
+    <a href="?theme=default">def</a>
+    |
+    <a href="?theme=black">blk</a>
+    |
+    <a href="?theme=blue">blu</a>
+
+    </span>
+
+</div>

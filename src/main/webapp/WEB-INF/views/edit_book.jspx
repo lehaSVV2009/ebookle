@@ -1,18 +1,3 @@
-<!--
-  Created by IntelliJ IDEA.
-  User: admin
-  Date: 25.08.13
-  Time: 1:57
-  To change this template use File | Settings | File Templates.
--->
-<html xmlns:form="http://www.springframework.org/tags/form">
-<head>
-    <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:8080/web-resources/css/dark.css"/>
-    <title>Edit Book</title>
-
-</head>
-<body>
-
 <div xmlns:jsp="http://java.sun.com/JSP/Page"
      xmlns:c="http://java.sun.com/jsp/jstl/core"
      xmlns:joda="http://www.joda.org/joda/time/tags"
@@ -25,7 +10,6 @@
     <h2>${book.title} </h2>
 
 
-
     <c:choose>
 
         <!--for Users who can edit -->
@@ -34,7 +18,6 @@
 
             <h2>${currentChapter.title}</h2>
             <br/>
-
 
 
             <c:choose>
@@ -51,13 +34,26 @@
 
                     </form>
 
-                    <br/>
-                    <c:forEach items="${book.chapters}" var="chapter">
-                        <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}" method="get">
-                            <input type="submit" value="${chapter.title}"/>
-                        </form>
-                        <br/>
-                    </c:forEach>
+                    <table>
+
+                        <c:forEach items="${book.chapters}" var="chapter">
+
+                            <tr>
+                                <th>
+                                    <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}"
+                                          method="get">
+                                        <input type="submit" value="${chapter.title}"/>
+                                    </form>
+                                </th>
+                                <th>
+                                    <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}/deleteChapter"
+                                          method="get">
+                                        <input type="submit" value="remove"/>
+                                    </form>
+                                </th>
+                            </tr>
+                        </c:forEach>
+                    </table>
 
                     <br/>
 
@@ -75,9 +71,6 @@
                 </c:otherwise>
             </c:choose>
 
-            <!--<form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show" method="post">
-                <input type="submit" value="Show"/>
-            </form>    -->
             <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}" method="get">
                 <input type="submit" value="Edit"/>
             </form>
@@ -88,12 +81,6 @@
                 <input type="submit" value="Show"/>
             </form>
 
-            <!--<form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}">
-                <te
-            </form>
-            -->
-
-            <!--<a href="${userLogin}/editBook/${book.title}/createNewChapter">Create Chapter</a>   -->
             <br/>
 
         </c:when>
@@ -145,6 +132,3 @@
 
 
 </div>
-
-</body>
-</html>

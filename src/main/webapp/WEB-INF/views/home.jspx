@@ -7,18 +7,21 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
 
-    <c:url value='/j_spring_security_logout' var="securityLogout"/>
 
     <spring:message code="home_text" var="homeText"/>
     <spring:url value="/" var="homeUrl"/>
+    <c:url value='/j_spring_security_logout' var="securityLogout"/>
 
     <a href="${homeUrl}">${homeText}</a>
 
 
     <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
 
+
+
         <br/>
-        <div style = "float: right">
+
+        <div style="float: right">
             <a href="${securityLogout}"> Logout</a>
         </div>
         <br/>
@@ -36,9 +39,8 @@
     </sec:authorize>
 
 
-
     <sec:authorize access="hasRole('ROLE_ADMIN')">
-        <div style = "float: right">
+        <div style="float: right">
             <a href="/admin">Admin</a>
         </div>
     </sec:authorize>
@@ -51,6 +53,11 @@
         <br/>
     </c:if>
 
+    <a href="/most_popular">Most Popular </a>
+    <a href="/recent">Recent </a>
+
+    <br/>
+
     <c:if test="${not empty books}">
 
         <table>
@@ -59,60 +66,44 @@
             <c:forEach items="${books}" var="book">
                 <tr>
                     <td><a href="/${book.user.login}/editBook/${book.title}/1/show">${book.title}</a></td>
-                    <!--<td>${book.description}</td>
-                    -->
-                    <!--<td>${book.user.name}</td>
-                    -->
                     <td>${book.user.surname}</td>
-
+                    <td>${book.rating}</td>
                 </tr>
 
             </c:forEach>
             </tbody>
+
         </table>
     </c:if>
     <c:url value='j_spring_security_check' var="securityCheck"/>
 
-    <form name='login_form' action="${securityCheck}"
-          method='POST'>
 
-        <table>
-            <tr>
-                <td>User:</td>
-                <td><input type='text' name='j_username' value=''/>
-                </td>
-            </tr>
-            <tr>
-                <td>Password:</td>
-                <td><input type='password' name='j_password'/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan='2'><input name="submit" type="submit"
-                                       value="Sign in"/>
-                </td>
-            </tr>
-        </table>
+    <c:if test="${person eq 'guest'}">
+        <form name='login_form' action="${securityCheck}"
+              method='POST'>
 
-    </form>
+            <table>
+                <tr>
+                    <td>User:</td>
+                    <td><input type='text' name='j_username' value=''/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type='password' name='j_password'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'><input name="submit" type="submit"
+                                           value="Sign in"/>
+                    </td>
+                </tr>
+            </table>
 
-    <a href="/registration">Registration</a>
+        </form>
 
-    <span style="float: right">
-        <a href="?lang=en">en</a>
-        |
-        <a href="?lang=ru">ru</a>
-    </span>
+        <a href="/registration">Registration</a>
 
-    <br/>
-
-    <span style="float: right">
-    <a href="?theme=default">def</a>
-    |
-    <a href="?theme=black">blk</a>
-    |
-    <a href="?theme=blue">blu</a>
-
-</span>
+    </c:if>
 
 </div>

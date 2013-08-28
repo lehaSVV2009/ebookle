@@ -42,21 +42,25 @@ public class LogInController {
     public String goHome (ModelMap modelMap, Principal principal, RedirectAttributes redirectAttributes) {
 
         try {
+
             List<Book> books = bookService.findAllWithAuthors();
             if (books == null) {
                 return showFlashMessage("Bad database", redirectAttributes);
             }
             modelMap.addAttribute("books", books);
-
-            if (principal != null) {
-                String login = principal.getName();
-                User user = userService.findByLogin(login);
-                if (user == null) {
-                    return showFlashMessage("Bad database", redirectAttributes);
-                }
-                modelMap.addAttribute("user", user);
-                modelMap.addAttribute("userBooks", user.getBooks());
+            if (principal == null) {
+                modelMap.addAttribute("person", UtilStrings.GUEST_PERSON);
+                return "home";
             }
+
+            String login = principal.getName();
+            User user = userService.findByLogin(login);
+            if (user == null) {
+                return showFlashMessage("Bad database", redirectAttributes);
+            }
+            modelMap.addAttribute("person", UtilStrings.USER_PERSON);
+            modelMap.addAttribute("user", user);
+            modelMap.addAttribute("userBooks", user.getBooks());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,7 +68,7 @@ public class LogInController {
     }
 
     @RequestMapping("/home")
-    public String goHome() {
+    public String goHome () {
         return "redirect:/";
     }
 

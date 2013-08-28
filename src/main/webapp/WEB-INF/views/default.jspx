@@ -16,7 +16,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=8"/>
 
-        <link rel="stylesheet" type="text/css" media="screen" href="../../web-resources/css/dark.css"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:8080/web-resources/css/dark.css"/>
 
 
         <!--<c:set var="userLocale">
@@ -30,16 +30,19 @@
 
     </head>
 
-    <body class="tundra spring">
-        <div id="headerWrapper">
+    <body>
+        <div>
             <tiles:insertAttribute name="header" ignore="true"/>
         </div>
-        <div id="wrapper">
-            <tiles:insertAttribute name="menu" ignore="true"/>
+        <div>
+            <!--<tiles:insertAttribute name="menu" ignore="true"/>-->
             <div id="main">
                 <tiles:insertAttribute name="body"/>
-                <tiles:insertAttribute name="footer" ignore="true"/>
+                <!--<tiles:insertAttribute name="footer" ignore="true"/>-->
             </div>
+        </div>
+        <div>
+            <tiles:insertAttribute name="footer"/>
         </div>
     </body>
 
