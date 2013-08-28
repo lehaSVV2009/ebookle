@@ -62,8 +62,7 @@ public class RegistrationService {
                 false
         );
         userService.saveOrUpdate(user);
-        //  TODO: change mail
-        sendKeyToMail("lehaSVV2009test@gmail.com",
+        sendKeyToMail(email,
                 "Registration to ebookle.com",
                 "http://localhost:8080/registration_success?key=" + userKey
         );

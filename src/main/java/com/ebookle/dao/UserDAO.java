@@ -12,22 +12,10 @@ import java.util.List;
  * Time: 4:10
  * To change this template use File | Settings | File Templates.
  */
-public interface UserDAO {
-
-    public void saveOrUpdate (User entity);
-
-    public List<User> findAll ();
-
-    public boolean delete (int id);
-
-    public User findById (int id);
+public interface UserDAO extends AbstractDAO<User, Integer>{
 
     public List<User> findAllWithDetails();
-
     public List<User> findAllByRole (String role);
-
     public User findByLogin (String login);
-
     public List<User> findAllNotActivatedByKey (String key);
-
 }

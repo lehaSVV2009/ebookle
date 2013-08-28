@@ -12,21 +12,10 @@ import java.util.List;
  * Time: 19:33
  * To change this template use File | Settings | File Templates.
  */
-public interface BookDAO {
-
-    public void saveOrUpdate (Book book);
-
-    public List<Book> findAll ();
+public interface BookDAO extends AbstractDAO<Book, Integer> {
 
     public List<Book> findAllWithAuthors ();
-
-    public boolean delete (int id);
-
-    public Book findById (int id);
-
     public Book findByIdWithAuthor (int id);
-
     public Book findByTitleAndUserIdWithChapters (String title, User user);
-
     public Book findByTitleAndUserId (String title, User user);
 }

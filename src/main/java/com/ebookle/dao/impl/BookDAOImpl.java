@@ -1,5 +1,6 @@
-package com.ebookle.dao;
+package com.ebookle.dao.impl;
 
+import com.ebookle.dao.BookDAO;
 import com.ebookle.entity.Book;
 import com.ebookle.entity.User;
 import org.hibernate.FetchMode;
@@ -19,56 +20,27 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Repository
-public class BookDAOImpl implements BookDAO{
+public class BookDAOImpl extends AbstractDAOImpl<Book, Integer> implements BookDAO{
 
-    @Autowired
-    protected SessionFactory sessionFactory;
-
-    protected Session getSession() {
-        return sessionFactory.getCurrentSession();
+    public BookDAOImpl () {
+        super(Book.class);
     }
 
-    @Override
-    public void saveOrUpdate(Book book) {
-        getSession().saveOrUpdate(book);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<Book> findAll() {
-        return getSession().createQuery("from " + Book.class.getName())
-                .list();
-    }
-
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     @Override
     public List<Book> findAllWithAuthors () {
         return getSession().createCriteria(Book.class).setFetchMode("user", FetchMode.EAGER)
                 .list();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean delete(int id) {
-        Book ent = (Book) getSession().load(Book.class, id);
-        if (ent != null) {
-            getSession().delete(ent);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public Book findById (int id) {
-        return (Book) getSession().get(Book.class, id);
-    }
-
+    @SuppressWarnings("deprecation")
     @Override
     public Book findByIdWithAuthor (int id) {
         return (Book) getSession().createCriteria(Book.class).setFetchMode("user", FetchMode.EAGER)
                 .add(Restrictions.idEq(id)).uniqueResult();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Book findByTitleAndUserIdWithChapters (String title, User user) {
         return (Book) getSession().createCriteria(Book.class).setFetchMode("chapters", FetchMode.EAGER)

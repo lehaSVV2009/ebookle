@@ -120,6 +120,10 @@
 
     </c:choose>
 
+    <spring:message code="home_text" var="homeText"/>
+    <spring:url value="/" var="homeUrl"/>
+    <a href="${homeUrl}">${homeText}</a>
+
     <!--
     <a href="/createChapter">Create Chapter</a>
     <br/>

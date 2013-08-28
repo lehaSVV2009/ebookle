@@ -1,5 +1,6 @@
-package com.ebookle.dao;
+package com.ebookle.dao.impl;
 
+import com.ebookle.dao.UserDAO;
 import com.ebookle.entity.User;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
@@ -18,44 +19,13 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Repository
-public class UserDAOImpl implements UserDAO{
+public class UserDAOImpl extends AbstractDAOImpl<User, Integer> implements UserDAO {
 
-    @Autowired
-    protected SessionFactory sessionFactory;
-
-    protected Session getSession() {
-        return sessionFactory.getCurrentSession();
+    protected UserDAOImpl () {
+        super(User.class);
     }
 
-    @Override
-    public void saveOrUpdate(User user) {
-        getSession().saveOrUpdate(user);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<User> findAll() {
-        return getSession().createQuery("from " + User.class.getName())
-                .list();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean delete(int id) {
-        User ent = (User) getSession().load(User.class, id);
-        if (ent != null) {
-            getSession().delete(ent);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public User findById (int id) {
-        return (User) getSession().get(User.class, id);
-    }
-
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     @Override
     public List<User> findAllWithDetails () {
         return getSession().createCriteria(User.class)
@@ -72,7 +42,7 @@ public class UserDAOImpl implements UserDAO{
                 .list();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     @Override
     public User findByLogin (String login) {
         return (User) getSession()

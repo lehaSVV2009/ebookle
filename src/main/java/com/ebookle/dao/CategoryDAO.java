@@ -11,14 +11,5 @@ import java.util.List;
  * Time: 19:33
  * To change this template use File | Settings | File Templates.
  */
-public interface CategoryDAO {
-
-    public void saveOrUpdate (Category book);
-
-    public List<Category> findAll ();
-
-    public boolean delete (int id);
-
-    public Category findById (int id);
-
+public interface CategoryDAO extends AbstractDAO<Category, Integer>{
 }

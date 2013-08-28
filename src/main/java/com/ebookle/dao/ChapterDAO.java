@@ -13,16 +13,7 @@ import java.util.List;
  * Time: 19:33
  * To change this template use File | Settings | File Templates.
  */
-public interface ChapterDAO {
-
-    public void saveOrUpdate (Chapter book);
-
-    public List<Chapter> findAll ();
-
-    public boolean delete (int id);
-
-    public Chapter findById (int id);
+public interface ChapterDAO extends AbstractDAO<Chapter, Integer>{
 
     public Chapter findByBookAndChapterNumber (Book book, Integer chapterNumber);
-
 }
