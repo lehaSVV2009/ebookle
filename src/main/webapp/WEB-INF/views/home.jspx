@@ -17,8 +17,6 @@
 
     <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
 
-
-
         <br/>
 
         <div style="float: right">
@@ -29,10 +27,19 @@
         <br/>
         Your books
         <br/>
-        <c:forEach items="${user.books}" var="userBook">
-            <a href="${user.login}/editBook/${userBook.title}/1">${userBook.title}</a>
-            <br/>
-        </c:forEach>
+
+        <table>
+            <c:forEach items="${user.books}" var="userBook">
+                <tr>
+                    <td>
+                        <a href="${user.login}/showBook/${userBook.id}">${userBook.title}</a>
+                    </td>
+                    <td>
+                        <a href="${user.login}/remove/${userBook.id}">delete</a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
         <br/>
         <a href="/${user.login}/bookCreation">Create Book</a>
 

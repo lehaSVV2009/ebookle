@@ -117,6 +117,17 @@ public class BookEditorController {
         return ("redirect:/" + userLogin + "/editBook/" + bookTitle + "/" + chapterNumber);
     }
 
+    @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @RequestMapping(value = "/{userLogin}/remove/{bookId}", method = RequestMethod.GET)
+    public String deleteBook(Principal principal, @PathVariable("userLogin") String userLogin, @PathVariable("bookId")Integer bookId){
+        if(principal != null) {
+            if(principal.getName().equals(userLogin)) {
+                bookService.delete(bookId);
+            }
+        }
+        return "redirect:/";
+    }
+
     private void createChapter (Book book, int number) {
         Chapter chapter = new Chapter(
                 UtilStrings.STANDARD_CHAPTER_NAME + number,
