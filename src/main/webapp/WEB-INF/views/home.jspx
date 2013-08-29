@@ -60,8 +60,8 @@
         <br/>
     </c:if>
 
-    <a href="/most_popular">Most Popular </a>
-    <a href="/recent">Recent </a>
+    <a href="/home/mostPopular">Most Popular </a>
+    <a href="/home/recent">Recent</a>
 
     <br/>
 

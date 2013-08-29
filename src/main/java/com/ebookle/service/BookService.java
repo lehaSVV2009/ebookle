@@ -24,4 +24,6 @@ public interface BookService {
     Book findByTitleAndUserIdWithChapters (String title, User user);
     Book findByTitleAndUserId (String title, User user);
     Book findByTitleAndUserIdWithTags (String title, User user);
+    List<Book> findMostPopularWithAuthors ();
+    List<Book> findRecentWithAuthors ();
 }

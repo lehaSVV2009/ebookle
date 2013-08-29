@@ -78,4 +78,15 @@ public class BookServiceImpl implements BookService {
         return bookDAO.findByTitleAndUserIdWithTags(title, user);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Book> findMostPopularWithAuthors () {
+        return bookDAO.findMostPopularWithAuthors();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Book> findRecentWithAuthors () {
+        return bookDAO.findRecentWithAuthors();
+    }
 }

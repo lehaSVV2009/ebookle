@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,41 +38,6 @@ public class LogInController {
     //TODO: add rus internationalization (model.put(JRParameter.REPORT_RESOURCE_BUNDLE , resourceBundle);)
 
 
-
-    @RequestMapping(value = "/")
-    public String goHome (ModelMap modelMap,
-                          Principal principal,
-                          RedirectAttributes redirectAttributes) {
-
-        try {
-            List<Book> books = bookService.findAllWithAuthors();
-            if (books == null) {
-                return showFlashMessage("Bad database", redirectAttributes);
-            }
-            modelMap.addAttribute("books", books);
-            if (principal == null) {
-                modelMap.addAttribute("person", UtilStrings.GUEST_PERSON);
-                return "home";
-            }
-            String login = principal.getName();
-            User user = userService.findByLogin(login);
-            if (user == null) {
-                return showFlashMessage("Bad database", redirectAttributes);
-            }
-            modelMap.addAttribute("person", UtilStrings.USER_PERSON);
-            modelMap.addAttribute("user", user);
-            modelMap.addAttribute("userBooks", user.getBooks());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "home";
-    }
-
-    @RequestMapping("/home")
-    public String goHome () {
-        return "redirect:/";
-    }
-
     @RequestMapping(value = "/welcome")
     public String welcomeUser (ModelMap modelMap, Principal principal) {
         modelMap.addAttribute("userLogin", principal.getName());
@@ -90,12 +56,6 @@ public class LogInController {
 
         redirectAttributes.addFlashAttribute("flashMessage", "You are log out");
         return "redirect:/";
-    }
-
-    private String showFlashMessage (String flashMessage, RedirectAttributes redirectAttributes) {
-
-        redirectAttributes.addFlashAttribute("flashMessage", flashMessage);
-        return "home";
     }
 
 }
