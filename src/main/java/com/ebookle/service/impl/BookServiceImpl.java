@@ -37,7 +37,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public boolean delete (int id) {
+    public boolean delete (Integer id) {
+
+        //  TODO: delete all connections with tags
         return bookDAO.delete(id);
     }
 

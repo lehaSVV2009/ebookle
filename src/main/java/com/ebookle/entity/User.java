@@ -25,7 +25,7 @@ public class User implements Entity, Serializable {
     private Integer id;
 
 
-    @Column(name = "login")
+    @Column(name = "login", unique = true)
     private String login;
 
     @Column(name = "password")

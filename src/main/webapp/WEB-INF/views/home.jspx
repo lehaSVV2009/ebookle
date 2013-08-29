@@ -32,10 +32,10 @@
             <c:forEach items="${user.books}" var="userBook">
                 <tr>
                     <td>
-                        <a href="${user.login}/editBook/${userBook.title}/1">${userBook.title}</a>
+                        <a href="/${user.login}/editBook/${userBook.title}/1">${userBook.title}</a>
                     </td>
                     <td>
-                        <a href="${user.login}/remove/${userBook.id}">delete</a>
+                        <a href="/${user.login}/remove/${userBook.id}">delete</a>
                     </td>
                 </tr>
             </c:forEach>

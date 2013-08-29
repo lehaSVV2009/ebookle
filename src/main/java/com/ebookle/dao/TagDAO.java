@@ -15,4 +15,5 @@ import java.util.List;
  */
 public interface TagDAO extends AbstractDAO<Tag, Integer>{
 
+    public Tag findTagByName(String name);
 }

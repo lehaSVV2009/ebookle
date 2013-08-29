@@ -17,7 +17,7 @@ public interface BookService {
 
     void saveOrUpdate (Book book);
     List<Book> findAll ();
-    boolean delete (int id);
+    boolean delete (Integer id);
     Book findById (int id);
     Book findByIdWithAuthor (int id);
     List<Book> findAllWithAuthors ();

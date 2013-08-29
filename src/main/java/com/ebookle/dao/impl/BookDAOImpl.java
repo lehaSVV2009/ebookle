@@ -84,4 +84,10 @@ public class BookDAOImpl extends AbstractDAOImpl<Book, Integer> implements BookD
                 .list();
     }
 
+    @Override
+    public boolean deleteBookFromBookTag (Integer id) {
+        //TODO: delete boolId from table booktag
+        return true;
+    }
+
 }

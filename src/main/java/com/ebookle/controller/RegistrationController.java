@@ -47,7 +47,7 @@ public class RegistrationController {
                 false
         );
         //  TODO: validate User
-        registrationService.register(user/*login, password, email, name, surname*/);
+        registrationService.register(user);
         redirectAttributes.addFlashAttribute("flashMessage", UtilStrings.SEND_DATA_SUCCESS);
         return "redirect:/";
     }

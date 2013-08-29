@@ -38,6 +38,8 @@ public class BookEditorController {
     @Autowired
     private ChapterService chapterService;
 
+    @Autowired
+    private TagService tagService;
 
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @RequestMapping(value = "/{userLogin}/bookCreation", method = RequestMethod.GET)
@@ -99,10 +101,27 @@ public class BookEditorController {
     }
 
     private Book addTag(String bookTag, Book book) {
-        Tag tag = new Tag();
-        tag.setBookTag(bookTag);
+
+        if (bookHasTag(book, bookTag)) {
+            return book;
+        }
+        Tag tag = tagService.findTagByName(bookTag);
+        if (tag == null) {
+            tag = new Tag();
+            tag.setBookTag(bookTag);
+        }
         book.getTags().add(tag);
         return book;
+    }
+
+    private boolean bookHasTag (Book book, String bookTag) {
+        List<Tag> tags = book.getTags();
+        for (Tag currentTag : tags) {
+            if (currentTag.getBookTag().equals(bookTag)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
@@ -134,6 +153,7 @@ public class BookEditorController {
         modelMap.addAttribute("person", "ownUser");
         modelMap.addAttribute("tags", bookService.findByTitleAndUserIdWithTags(bookTitle, user).getTags());
         return "edit_book";
+
     }
 
     //  Chapter Edition

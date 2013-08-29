@@ -24,7 +24,7 @@ public class Tag implements Entity, Serializable {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "bookTag")
+    @Column(name = "bookTag", unique = true)
     private String bookTag;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")

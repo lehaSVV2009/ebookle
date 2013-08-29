@@ -44,4 +44,10 @@ public class TagServiceImpl implements TagService {
     public Tag findById (int id) {
         return tagDAO.findById(id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Tag findTagByName (String name) {
+        return tagDAO.findTagByName(name);
+    }
 }

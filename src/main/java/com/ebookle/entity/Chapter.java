@@ -27,7 +27,7 @@ public class Chapter implements Entity, Serializable {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "text")
+    @Column(name = "text", columnDefinition="TEXT")
     private String text;
 
     @Column(name = "chapterNumber")

@@ -21,4 +21,5 @@ public interface BookDAO extends AbstractDAO<Book, Integer> {
     public Book findByTitleAndUserIdWithTags (String title, User user);
     public List<Book> findMostPopularWithAuthors ();
     public List<Book> findRecentWithAuthors ();
+    public boolean deleteBookFromBookTag (Integer id);
 }

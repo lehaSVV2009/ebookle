@@ -27,4 +27,10 @@ public class TagDAOImpl extends AbstractDAOImpl<Tag, Integer> implements TagDAO 
         super(Tag.class);
     }
 
+    @Override
+    public Tag findTagByName (String name) {
+        return (Tag) getSession().createCriteria(Tag.class)
+                .add(Restrictions.eq("bookTag", name))
+                .uniqueResult();
+    }
 }
