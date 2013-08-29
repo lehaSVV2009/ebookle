@@ -10,6 +10,7 @@
     <spring:message code="title_label" var="titleLabel"/>
     <spring:message code="description_label" var="descriptionLabel"/>
     <spring:message code="category_label" var="categoryLabel"/>
+    <spring:message code="add_tag_label" var="addTagLabel"/>
     <spring:message code="create_book_button_text" var="createBookButtonText"/>
     <spring:message code="cancel" var="cancel"/>
 
@@ -35,6 +36,10 @@
 
             </select>
         </c:if>
+        <br/>
+        ${addTagLabel}
+        <br/>
+        <input type="text" name="bookTag"></input>
         <br/>
         <input type="submit" value="${createBookButtonText}"/>
 

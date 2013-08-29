@@ -42,7 +42,6 @@ public class LogInController {
     public String goHome (ModelMap modelMap, Principal principal, RedirectAttributes redirectAttributes) {
 
         try {
-
             List<Book> books = bookService.findAllWithAuthors();
             if (books == null) {
                 return showFlashMessage("Bad database", redirectAttributes);
@@ -52,7 +51,6 @@ public class LogInController {
                 modelMap.addAttribute("person", UtilStrings.GUEST_PERSON);
                 return "home";
             }
-
             String login = principal.getName();
             User user = userService.findByLogin(login);
             if (user == null) {
@@ -71,7 +69,6 @@ public class LogInController {
     public String goHome () {
         return "redirect:/";
     }
-
 
     @RequestMapping(value = "/welcome")
     public String welcomeUser (ModelMap modelMap, Principal principal) {
@@ -94,6 +91,7 @@ public class LogInController {
     }
 
     private String showFlashMessage (String flashMessage, RedirectAttributes redirectAttributes) {
+
         redirectAttributes.addFlashAttribute("flashMessage", flashMessage);
         return "home";
     }

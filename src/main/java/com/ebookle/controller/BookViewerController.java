@@ -41,6 +41,7 @@ public class BookViewerController {
         modelMap.addAttribute("userLogin", userLogin);
         modelMap.addAttribute("currentChapter", currentChapter);
         modelMap.addAttribute("userAction", "show");
+        modelMap.addAttribute("tags", bookService.findByTitleAndUserIdWithTags(bookTitle, user).getTags());
         if (principal == null) {
             modelMap.addAttribute("person", "guest");
         } else if (!userLogin.equals(principal.getName())) {

@@ -1,6 +1,9 @@
 package com.ebookle.entity;
 
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -48,21 +51,13 @@ public class Book implements Entity, Serializable {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Chapter> chapters = new ArrayList<Chapter>();
 
-    /*@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Chapter> chapters;
+    @Fetch(FetchMode.SELECT)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinTable(name = "bookTag",
+            joinColumns = { @JoinColumn(name = "BOOK_ID") },
+            inverseJoinColumns = { @JoinColumn(name = "TAG_ID") } )
+    private List<Tag> tags = new ArrayList<Tag>();
 
-    @ManyToOne
-    @JoinColumn
-    private Category category;
-
-    @ManyToOne
-    @JoinColumn
-    private Prefer prefer;
-
-    @ManyToMany
-    @JoinTable
-    private List<Tag> tags;
-    */
     public Book () {
     }
 
@@ -139,22 +134,6 @@ public class Book implements Entity, Serializable {
         this.chapters = chapters;
     }
 
-/*public Category getCategory () {
-        return category;
-    }
-
-    public void setCategory (Category category) {
-        this.category = category;
-    }
-
-    public Prefer getPrefer () {
-        return prefer;
-    }
-
-    public void setPrefer (Prefer prefer) {
-        this.prefer = prefer;
-    }
-
     public List<Tag> getTags () {
         return tags;
     }
@@ -162,5 +141,4 @@ public class Book implements Entity, Serializable {
     public void setTags (List<Tag> tags) {
         this.tags = tags;
     }
-    */
 }

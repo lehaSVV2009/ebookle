@@ -1,9 +1,6 @@
 package com.ebookle.controller;
 
-import com.ebookle.entity.Book;
-import com.ebookle.entity.Category;
-import com.ebookle.entity.Chapter;
-import com.ebookle.entity.User;
+import com.ebookle.entity.*;
 import com.ebookle.service.*;
 import com.ebookle.util.UtilStrings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -50,11 +49,21 @@ public class BookEditorController {
 
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @RequestMapping(value = "/{userLogin}/createNewBook", method = RequestMethod.POST)
-    public String createNewBook (@PathVariable("userLogin") String userLogin, @RequestParam("title") String title, @RequestParam("description") String description, @RequestParam("category") Integer categoryId, ModelMap modelMap) {
+    public String createNewBook (Principal principal,
+                                 @PathVariable("userLogin") String userLogin,
+                                 @RequestParam("title") String title,
+                                 @RequestParam("description") String description,
+                                 @RequestParam("category") Integer categoryId,
+                                 @RequestParam("bookTag") String bookTag,
+                                 ModelMap modelMap) {
 
         //TODO: checkParams
         //TODO: checkBookName
-        User user = userService.findByLogin(userLogin);
+        if (!principal.getName().equals(userLogin)) {
+            modelMap.addAttribute("error", "You cannot enter site!");
+            return "error";
+        }
+        User user = userService.findByLogin(principal.getName());
         Category category = categoryService.findById(categoryId);
         Book book = new Book(
                 title,
@@ -62,13 +71,47 @@ public class BookEditorController {
                 user,
                 category
         );
+        if (bookTag != null && !"".equals(bookTag)) {
+            book = addTag(bookTag, book);
+        }
         bookService.saveOrUpdate(book);
         return "redirect:/" + userLogin + "/editBook/" + title + "/1";
     }
 
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/{chapterNumber}/addTag", method = RequestMethod.POST)
+    public String addTag (Principal principal,
+                          @PathVariable("chapterNumber") Integer chapterNumber,
+                          @PathVariable("userLogin") String userLogin,
+                          @PathVariable("bookTitle") String bookTitle,
+                          @RequestParam("bookTag") String bookTag,
+                          ModelMap modelMap) {
+        if (principal == null
+                || ! principal.getName().equals(userLogin)) {
+            modelMap.addAttribute("error", "Страница недоступна!");
+            return "error";
+        }
+        User user = userService.findByLogin(userLogin);
+        Book book = bookService.findByTitleAndUserIdWithTags(bookTitle, user);
+        book = addTag(bookTag, book);
+        bookService.saveOrUpdate(book);
+        return "redirect:/" + userLogin + "/editBook/" + bookTitle + "/" + chapterNumber;
+    }
+
+    private Book addTag(String bookTag, Book book) {
+        Tag tag = new Tag();
+        tag.setBookTag(bookTag);
+        book.getTags().add(tag);
+        return book;
+    }
+
+    @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/{chapterNumber}", method = RequestMethod.GET)
-    public String updateBook (Principal principal, @PathVariable("chapterNumber") Integer chapterNumber, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle, ModelMap modelMap) {
+    public String updateBook (Principal principal,
+                              @PathVariable("chapterNumber") Integer chapterNumber,
+                              @PathVariable("userLogin") String userLogin,
+                              @PathVariable("bookTitle") String bookTitle,
+                              ModelMap modelMap) {
 
         if (principal == null
                 || ! principal.getName().equals(userLogin)) {
@@ -89,6 +132,7 @@ public class BookEditorController {
         modelMap.addAttribute("currentChapter", book.getChapters().get(chapterNumber - 1));
         modelMap.addAttribute("userAction", "edit");
         modelMap.addAttribute("person", "ownUser");
+        modelMap.addAttribute("tags", bookService.findByTitleAndUserIdWithTags(bookTitle, user).getTags());
         return "edit_book";
     }
 

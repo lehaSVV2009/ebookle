@@ -57,6 +57,7 @@
 
                     <br/>
 
+
                 </c:when>
 
                 <c:otherwise>
@@ -83,6 +84,11 @@
 
             <br/>
 
+            <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/addTag" method="post">
+                <input type="text" name="bookTag"/>
+                <input type="submit" value="Add Tag"/>
+            </form>
+
         </c:when>
 
         <c:otherwise>
@@ -107,26 +113,21 @@
 
     </c:choose>
 
+    <br/>
+    Tags:
+    <br/>
+    <c:if test="${not empty tags}">
+        <c:forEach items="${tags}" var="tag">
+            ${tag.bookTag}
+            <br/>
+        </c:forEach>
+    </c:if>
+
+
     <spring:message code="home_text" var="homeText"/>
     <spring:url value="/" var="homeUrl"/>
     <a href="${homeUrl}">${homeText}</a>
 
-    <!--
-    <a href="/createChapter">Create Chapter</a>
-    <br/>
-
-    ${chapter.title}
-    <br/>
-    ${chapter.text}
-    <br/>
-    ${chapter.book.title}
-    <br/>
-    -->
-
-    <!--<form:form>
-        <form:radiobuttons path="chosenChapter" items="${chapters}"/>
-    </form:form>
-    -->
     <br/>
     <br/>
 

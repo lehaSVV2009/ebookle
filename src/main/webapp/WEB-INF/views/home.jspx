@@ -25,14 +25,14 @@
         <br/>
         Hello, ${user.name}
         <br/>
-        Your books
+        Your books:
         <br/>
 
         <table>
             <c:forEach items="${user.books}" var="userBook">
                 <tr>
                     <td>
-                        <a href="${user.login}/showBook/${userBook.id}">${userBook.title}</a>
+                        <a href="${user.login}/editBook/${userBook.title}/1">${userBook.title}</a>
                     </td>
                     <td>
                         <a href="${user.login}/remove/${userBook.id}">delete</a>

@@ -57,4 +57,12 @@ public class BookDAOImpl extends AbstractDAOImpl<Book, Integer> implements BookD
                 .uniqueResult();
     }
 
+    @Override
+    public Book findByTitleAndUserIdWithTags (String title, User user) {
+        return (Book) getSession().createCriteria(Book.class).setFetchMode("tags", FetchMode.EAGER)
+                .add(Restrictions.eq("user", user))
+                .add(Restrictions.eq("title", title))
+                .uniqueResult();
+    }
+
 }

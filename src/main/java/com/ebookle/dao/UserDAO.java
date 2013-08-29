@@ -1,6 +1,5 @@
 package com.ebookle.dao;
 
-import com.ebookle.entity.Book;
 import com.ebookle.entity.User;
 
 import java.util.List;
