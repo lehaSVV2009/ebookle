@@ -1,5 +1,7 @@
 package com.ebookle.service;
 
+import com.ebookle.entity.User;
+
 /**
  * Created with IntelliJ IDEA.
  * User: admin
@@ -9,6 +11,6 @@ package com.ebookle.service;
  */
 public interface RegistrationService {
 
-    void register (String login, String password, String email, String name, String surname);
+    void register (User user);
     boolean activateUser (String key);
 }

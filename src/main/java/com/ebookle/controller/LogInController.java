@@ -36,8 +36,12 @@ public class LogInController {
 
     //TODO: add rus internationalization (model.put(JRParameter.REPORT_RESOURCE_BUNDLE , resourceBundle);)
 
-    @RequestMapping("/")
-    public String goHome (ModelMap modelMap, Principal principal, RedirectAttributes redirectAttributes) {
+
+
+    @RequestMapping(value = "/")
+    public String goHome (ModelMap modelMap,
+                          Principal principal,
+                          RedirectAttributes redirectAttributes) {
 
         try {
             List<Book> books = bookService.findAllWithAuthors();

@@ -1,5 +1,6 @@
 package com.ebookle.controller;
 
+import com.ebookle.entity.User;
 import com.ebookle.service.impl.RegistrationServiceImpl;
 import com.ebookle.util.UtilStrings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,18 @@ public class RegistrationController {
             redirectAttributes.addFlashAttribute("badInput", UtilStrings.BAD_INPUT);
             return "redirect:/registration";
         }
-        registrationService.register(login, password, email, name, surname);
+        User user = new User(
+                login,
+                password,
+                email,
+                name,
+                surname,
+                "",
+                UtilStrings.USER_ROLE_TEXT,
+                false
+        );
+        //  TODO: validate User
+        registrationService.register(user/*login, password, email, name, surname*/);
         redirectAttributes.addFlashAttribute("flashMessage", UtilStrings.SEND_DATA_SUCCESS);
         return "redirect:/";
     }

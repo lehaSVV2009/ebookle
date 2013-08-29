@@ -29,31 +29,24 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Autowired
     private UserServiceImpl userService;
 
-    public void register(String login, String password, String email, String name, String surname) {
-
-        String userKey = RandomKeyCreator.createRandomKey();
-        User user = new User(
-                login,
-                password,
-                email,
-                name,
-                surname,
-                userKey,
-                UtilStrings.USER_ROLE_TEXT,
-                false
-        );
-        userService.saveOrUpdate(user);
-        sendKeyToMail(email,
-                "Registration to ebookle.com",
-                "http://localhost:8080/registration_success?key=" + userKey
-        );
-    }
 
     protected void sendKeyToMail (String to, String topic, String message) {
         preConfiguredMessage.setTo(to);
         preConfiguredMessage.setSubject(topic);
         preConfiguredMessage.setText(message);
         mailSender.send(preConfiguredMessage);
+    }
+
+    @Override
+    public void register (User user) {
+        String userKey = RandomKeyCreator.createRandomKey();
+        user.setRegisteredKey(userKey);
+        userService.saveOrUpdate(user);
+        sendKeyToMail(
+                user.getEmail(),
+                "Registration site ebookle.com",
+                "http://localhost:8080/registration_success?key=" + userKey
+        );
     }
 
     public boolean activateUser(String key) {

@@ -1,5 +1,7 @@
 package com.ebookle.entity;
 
+import org.hibernate.validator.constraints.Email;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -21,6 +23,7 @@ public class User implements Entity, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
 
     @Column(name = "login")
     private String login;
