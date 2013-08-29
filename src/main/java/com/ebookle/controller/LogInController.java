@@ -5,13 +5,11 @@ import com.ebookle.entity.Book;
 import com.ebookle.entity.Category;
 import com.ebookle.entity.Chapter;
 */
-import com.ebookle.entity.Category;
-import com.ebookle.entity.Chapter;
 import com.ebookle.entity.User;
 import com.ebookle.service.*;
+import com.ebookle.service.impl.UserServiceImpl;
 import com.ebookle.util.UtilStrings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +29,7 @@ import java.util.List;
 public class LogInController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private BookService bookService;

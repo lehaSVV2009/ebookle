@@ -4,7 +4,7 @@ import com.ebookle.entity.Book;
 import com.ebookle.entity.Chapter;
 import com.ebookle.entity.User;
 import com.ebookle.service.BookService;
-import com.ebookle.service.UserService;
+import com.ebookle.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,7 +25,7 @@ import java.security.Principal;
 public class BookViewerController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private BookService bookService;

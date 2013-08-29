@@ -86,7 +86,7 @@
 
             <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/addTag" method="post">
                 <input type="text" name="bookTag"/>
-                <input type="submit" value="Add Tag"/>
+                <!--<input type="submit" value="Add Tag"/>-->
             </form>
 
         </c:when>

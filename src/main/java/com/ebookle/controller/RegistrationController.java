@@ -1,6 +1,6 @@
 package com.ebookle.controller;
 
-import com.ebookle.service.RegistrationService;
+import com.ebookle.service.impl.RegistrationServiceImpl;
 import com.ebookle.util.UtilStrings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.security.Principal;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,7 +21,7 @@ import java.security.Principal;
 public class RegistrationController {
 
     @Autowired
-    private RegistrationService registrationService;
+    private RegistrationServiceImpl registrationService;
 
     @RequestMapping("/register")
     public String register (RedirectAttributes redirectAttributes,

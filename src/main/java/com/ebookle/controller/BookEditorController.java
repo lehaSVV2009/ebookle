@@ -2,6 +2,7 @@ package com.ebookle.controller;
 
 import com.ebookle.entity.*;
 import com.ebookle.service.*;
+import com.ebookle.service.impl.UserServiceImpl;
 import com.ebookle.util.UtilStrings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +27,7 @@ import java.util.List;
 public class BookEditorController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private BookService bookService;
@@ -159,6 +159,35 @@ public class BookEditorController {
         chapter.setText(text);
         chapterService.saveOrUpdate(chapter);
         return ("redirect:/" + userLogin + "/editBook/" + bookTitle + "/" + chapterNumber);
+    }
+
+    @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/{chapterNumber}/deleteChapter", method = RequestMethod.GET)
+    private String deleteChapter(Principal principal,
+                                 @PathVariable("chapterNumber") Integer chapterNumber,
+                                 @PathVariable("userLogin") String userLogin,
+                                 @PathVariable("bookTitle") String bookTitle,
+                                 ModelMap modelMap) {
+        if (!principal.getName().equals(userLogin)) {
+            modelMap.addAttribute("error", "You haven't got access to this page!");
+            return "error";
+        }
+        User user = userService.findByLogin(userLogin);
+        Book book = bookService.findByTitleAndUserIdWithChapters(bookTitle,user);
+        List<Chapter> chapters = book.getChapters();
+
+        for(Chapter chapter:chapters){
+            if (chapterNumber == chapter.getChapterNumber()){
+                chapterService.delete(chapter.getId());
+            } else if(chapter.getChapterNumber() > chapterNumber){
+                chapter.setChapterNumber(chapter.getChapterNumber() - 1);
+                if (chapter.getTitle().startsWith(UtilStrings.STANDARD_CHAPTER_NAME)) {
+                    chapter.setTitle(UtilStrings.STANDARD_CHAPTER_NAME + chapter.getChapterNumber());
+                }
+                chapterService.saveOrUpdate(chapter);
+            }
+        }
+        return ("redirect:/" + userLogin + "/editBook/" + bookTitle + "/1");
     }
 
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
