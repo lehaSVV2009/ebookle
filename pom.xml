@@ -191,7 +191,13 @@
             <version>${org.springframework.version}</version>
         </dependency>
 
+        <!--Markdown-->
 
+        <dependency>
+            <groupId>org.markdownj</groupId>
+            <artifactId>markdownj</artifactId>
+            <version>0.3.0-1.0.2b4</version>
+        </dependency>
 
     </dependencies>
 

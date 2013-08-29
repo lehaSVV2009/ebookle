@@ -1,8 +1,10 @@
 package com.ebookle.controller;
 
 import com.ebookle.entity.Book;
+import com.ebookle.entity.Category;
 import com.ebookle.entity.User;
 import com.ebookle.service.BookService;
+import com.ebookle.service.CategoryService;
 import com.ebookle.service.UserService;
 import com.ebookle.util.UtilStrings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,28 +34,37 @@ public class HomeController {
     @Autowired
     private BookService bookService;
 
-
+    @Autowired
+    private CategoryService categoryService;
 
     @RequestMapping(value = "/home/{searchType}")
-    public String showMostPopularBooks(ModelMap modelMap,
-                                       Principal principal,
-                                       RedirectAttributes redirectAttributes,
-                                       @PathVariable("searchType") String searchType) {
+    public String showMostPopularBooks (ModelMap modelMap,
+                                        Principal principal,
+                                        RedirectAttributes redirectAttributes,
+                                        @PathVariable("searchType") String searchType) {
         try {
 
             //TODO: check searchType on exist
 
             List<Book> books = new ArrayList<Book>();
+            List<Category> categories = categoryService.findAll();
             if ("mostPopular".equals(searchType)) {
                 books = bookService.findMostPopularWithAuthors();
-            }
-            if ("recent".equals(searchType)) {
+            } else if ("recent".equals(searchType)) {
                 books = bookService.findRecentWithAuthors();
+            } else {
+                for (Category category : categories) {
+                    if (category.getName().equals(searchType)) {
+                        books = bookService.findByCategoryWithAuthors(category);
+                        break;
+                    }
+                }
             }
             if (books == null) {
                 return showFlashMessage("Bad database", redirectAttributes);
             }
             modelMap.addAttribute("books", books);
+            modelMap.addAttribute("categories", categories);
             if (principal == null) {
                 modelMap.addAttribute("person", UtilStrings.GUEST_PERSON);
                 return "home";
@@ -63,9 +74,14 @@ public class HomeController {
             if (user == null) {
                 return showFlashMessage("Bad database", redirectAttributes);
             }
-            modelMap.addAttribute("person", UtilStrings.USER_PERSON);
+            if (user.getRole().equals(UtilStrings.USER_ROLE_TEXT)){
+                modelMap.addAttribute("person", UtilStrings.USER_PERSON);
+            } else {
+                modelMap.addAttribute("person", UtilStrings.ADMIN_PERSON);
+            }
             modelMap.addAttribute("user", user);
             modelMap.addAttribute("userBooks", user.getBooks());
+
         } catch (Exception e) {
             e.printStackTrace();
         }

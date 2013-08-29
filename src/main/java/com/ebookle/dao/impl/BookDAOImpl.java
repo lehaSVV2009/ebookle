@@ -2,6 +2,7 @@ package com.ebookle.dao.impl;
 
 import com.ebookle.dao.BookDAO;
 import com.ebookle.entity.Book;
+import com.ebookle.entity.Category;
 import com.ebookle.entity.User;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
@@ -88,6 +89,16 @@ public class BookDAOImpl extends AbstractDAOImpl<Book, Integer> implements BookD
     public boolean deleteBookFromBookTag (Integer id) {
         //TODO: delete boolId from table booktag
         return true;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public List<Book> findByCategoryWithAuthors (Category category) {
+        return getSession().createCriteria(Book.class).setFetchMode("user", FetchMode.EAGER)
+                .add(Restrictions.eq("category", category))
+                .addOrder(Order.asc("id"))
+                .list();
+
     }
 
 }

@@ -10,9 +10,12 @@ package com.ebookle.util;
 public final class UtilStrings {
 
     public final static String USER_ROLE_TEXT = "ROLE_USER";
+    public final static String ADMIN_ROLE_TEXT = "ROLE_ADMIN";
+
     public final static String STANDARD_CHAPTER_NAME = "Chapter";
     public final static String GUEST_PERSON = "guest";
     public final static String USER_PERSON = "user";
+    public final static String ADMIN_PERSON = "admin";
 
 
     public final static String BAD_INPUT = "Bad input!";

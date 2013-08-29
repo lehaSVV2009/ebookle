@@ -50,4 +50,10 @@ public class TagServiceImpl implements TagService {
     public Tag findTagByName (String name) {
         return tagDAO.findTagByName(name);
     }
+
+    @Override
+    @Transactional
+    public List<Tag> findAllWithBooks () {
+        return tagDAO.findAllWithBooks();
+    }
 }

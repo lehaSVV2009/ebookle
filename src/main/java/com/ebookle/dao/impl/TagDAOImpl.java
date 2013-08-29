@@ -5,6 +5,7 @@ import com.ebookle.dao.TagDAO;
 import com.ebookle.entity.Book;
 import com.ebookle.entity.Category;
 import com.ebookle.entity.Tag;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -32,5 +33,11 @@ public class TagDAOImpl extends AbstractDAOImpl<Tag, Integer> implements TagDAO 
         return (Tag) getSession().createCriteria(Tag.class)
                 .add(Restrictions.eq("bookTag", name))
                 .uniqueResult();
+    }
+
+    @Override
+    public List<Tag> findAllWithBooks () {
+        return getSession().createCriteria(Tag.class).setFetchMode("books", FetchMode.EAGER)
+                .list();
     }
 }

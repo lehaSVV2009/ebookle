@@ -19,4 +19,5 @@ public interface TagService {
     boolean delete (int id);
     Tag findById (int id);
     Tag findTagByName(String name);
+    List<Tag> findAllWithBooks ();
 }

@@ -1,6 +1,7 @@
 package com.ebookle.dao;
 
 import com.ebookle.entity.Book;
+import com.ebookle.entity.Category;
 import com.ebookle.entity.User;
 
 import java.util.List;
@@ -22,4 +23,5 @@ public interface BookDAO extends AbstractDAO<Book, Integer> {
     public List<Book> findMostPopularWithAuthors ();
     public List<Book> findRecentWithAuthors ();
     public boolean deleteBookFromBookTag (Integer id);
+    public List<Book> findByCategoryWithAuthors (Category category);
 }

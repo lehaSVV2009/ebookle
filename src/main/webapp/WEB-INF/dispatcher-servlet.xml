@@ -19,7 +19,6 @@
     <annotation-driven/>
     <default-servlet-handler/>
 
-
     <context:component-scan base-package="com.ebookle.controller"/>
     <context:component-scan base-package="com.ebookle.dao"/>
     <context:component-scan base-package="com.ebookle.service"/>
@@ -118,6 +117,11 @@
 
     <beans:bean id="random"
                 class="java.util.Random"/>
+
+    <!--Markdown-->
+
+    <beans:bean id="markdownProcessor"
+                class="com.petebevin.markdown.MarkdownProcessor"/>
 
     <tx:annotation-driven proxy-target-class="true"/>
 

@@ -13,7 +13,8 @@ import java.util.List;
  * Time: 19:33
  * To change this template use File | Settings | File Templates.
  */
-public interface TagDAO extends AbstractDAO<Tag, Integer>{
+public interface TagDAO extends AbstractDAO<Tag, Integer> {
 
-    public Tag findTagByName(String name);
+    public Tag findTagByName (String name);
+    public List<Tag> findAllWithBooks ();
 }

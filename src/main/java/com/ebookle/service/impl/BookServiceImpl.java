@@ -2,6 +2,7 @@ package com.ebookle.service.impl;
 
 import com.ebookle.dao.BookDAO;
 import com.ebookle.entity.Book;
+import com.ebookle.entity.Category;
 import com.ebookle.entity.User;
 import com.ebookle.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,5 +91,11 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     public List<Book> findRecentWithAuthors () {
         return bookDAO.findRecentWithAuthors();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Book> findByCategoryWithAuthors (Category category) {
+        return bookDAO.findByCategoryWithAuthors(category);
     }
 }

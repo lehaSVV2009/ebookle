@@ -1,6 +1,7 @@
 package com.ebookle.service;
 
 import com.ebookle.entity.Book;
+import com.ebookle.entity.Category;
 import com.ebookle.entity.User;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,4 +27,5 @@ public interface BookService {
     Book findByTitleAndUserIdWithTags (String title, User user);
     List<Book> findMostPopularWithAuthors ();
     List<Book> findRecentWithAuthors ();
+    List<Book> findByCategoryWithAuthors (Category category);
 }

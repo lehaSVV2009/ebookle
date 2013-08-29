@@ -61,7 +61,7 @@
                 </c:when>
 
                 <c:otherwise>
-                    <textarea disabled="disabled">${currentChapter.text}</textarea>
+                    <div>${htmlChapterText}</div>
                     <br/>
                     <c:forEach items="${book.chapters}" var="chapter">
                         <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}/show" method="get">
@@ -93,7 +93,7 @@
 
         <c:otherwise>
 
-            <textarea disabled="disabled">${currentChapter.text}</textarea>
+            <div>${htmlChapterText}</div>
             <br/>
 
             <c:forEach items="${book.chapters}" var="chapter">

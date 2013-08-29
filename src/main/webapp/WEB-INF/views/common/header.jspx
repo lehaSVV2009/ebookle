@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
 <div id="header"
      xmlns:jsp="http://java.sun.com/JSP/Page"
      xmlns:spring="http://www.springframework.org/tags"
@@ -6,17 +7,54 @@
 
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <spring:message code="header_text" var="headerText"/>
-    <div id="app_name">
-        <h1>${headerText}</h1>
-    </div>
-
-    <spring:message code="home_text" var="homeText"/>
+    <spring:message code="search_by_content" var="serachByContent"/>
+    <spring:message code="search_by_tag" var="searchByTag"/>
+    <spring:message code="search_by_category" var="searchByCategory"/>
     <spring:url value="/" var="homeUrl"/>
-    <a href="${homeUrl}">${homeText}</a>
 
-    <div id="search" style="float:right;">
-        Search
+    <div id="Header" class="navbar nav-bar-default fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="${homeUrl}" title="Home">
+                    <img src="http://localhost:8080/web-resources/img/logo-small.png"></img>
+                </a>
+            </div>
+            <!--<ul class="nav navbar-nav navbar-right">-->
+            <!--<li>-->
+            <!--<input id="search" type="text" class="form-control col-lg-8" placeholder="Search"></input>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<select name="Settings">-->
+            <!--<option value="1">${serachByContent}</option>-->
+            <!--<option value="2">${searchByTag}</option>-->
+            <!--<option value="3">${searchByCategory}</option>-->
+            <!--</select>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control col-lg-8" placeholder="Search"></input>
+            </form>
+            <form class="navbar-form navbar-right">
+                <select class="form-control" id="select">
+                    <option value="1">${serachByContent}</option>
+                    <option value="2">${searchByTag}</option>
+                    <option value="3">${searchByCategory}</option>
+                </select>
+            </form>
+            <!--<ul class="nav navbar-nav navbar-right">-->
+            <!--<li class="dropdown">-->
+            <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>-->
+            <!--<ul class="dropdown-menu">-->
+            <!--<li><a href="#">${serachByContent}</a></li>-->
+            <!--<li><a href="#">${searchByTag}</a></li>-->
+            <!--<li><a href="#">${searchByCategory}</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--</ul>-->
+
+
+
+        </div>
     </div>
 
 </div>

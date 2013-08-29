@@ -5,6 +5,7 @@ import com.ebookle.entity.Chapter;
 import com.ebookle.entity.User;
 import com.ebookle.service.BookService;
 import com.ebookle.service.impl.UserServiceImpl;
+import com.petebevin.markdown.MarkdownProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,6 +31,8 @@ public class BookViewerController {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private MarkdownProcessor markdownProcessor;
 
     @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/{chapterNumber}/show", method = RequestMethod.GET)
     public String showChapter (Principal principal, @PathVariable("chapterNumber") Integer chapterNumber, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle, ModelMap modelMap) {
@@ -37,11 +40,13 @@ public class BookViewerController {
         User user = userService.findByLogin(userLogin);
         Book book = bookService.findByTitleAndUserIdWithChapters(bookTitle, user);
         Chapter currentChapter = book.getChapters().get(chapterNumber - 1);
+        String htmlChapterText = markdownProcessor.markdown(currentChapter.getText());
         modelMap.addAttribute("book", book);
         modelMap.addAttribute("userLogin", userLogin);
         modelMap.addAttribute("currentChapter", currentChapter);
         modelMap.addAttribute("userAction", "show");
         modelMap.addAttribute("tags", bookService.findByTitleAndUserIdWithTags(bookTitle, user).getTags());
+        modelMap.addAttribute("htmlChapterText", htmlChapterText);
         if (principal == null) {
             modelMap.addAttribute("person", "guest");
         } else if (!userLogin.equals(principal.getName())) {
@@ -51,6 +56,7 @@ public class BookViewerController {
         }
         return "edit_book";
     }
+
 
 
 }
