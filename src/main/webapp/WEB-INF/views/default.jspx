@@ -10,9 +10,9 @@
     <jsp:directive.page pageEncoding="UTF-8"/>
 
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=8"/>
-        <link rel="stylesheet" type="text/css" media="screen"
+        --><link rel="stylesheet" type="text/css" media="screen"
               href="http://localhost:8080/web-resources/bootstrap/css/dark.css"/>
         <link rel="stylesheet" type="text/css" media="screen" href="http://localhost:8080/web-resources/css/default.css"/>
 

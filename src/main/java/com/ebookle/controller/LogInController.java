@@ -29,18 +29,8 @@ import java.util.List;
 @Controller
 public class LogInController {
 
-    @Autowired
-    private UserServiceImpl userService;
-
-    @Autowired
-    private BookService bookService;
-
-    //TODO: add rus internationalization (model.put(JRParameter.REPORT_RESOURCE_BUNDLE , resourceBundle);)
-
-
     @RequestMapping(value = "/welcome")
     public String welcomeUser (ModelMap modelMap, Principal principal) {
-        modelMap.addAttribute("userLogin", principal.getName());
         return "redirect:/";
     }
 

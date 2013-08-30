@@ -121,6 +121,7 @@ public class BookEditorController {
         if (tag == null) {
             tag = new Tag();
             tag.setBookTag(bookTag);
+            tagService.saveOrUpdate(tag);
         }
         book.getTags().add(tag);
         return book;
