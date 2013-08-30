@@ -51,7 +51,6 @@
 
     <beans:import resource="spring/hibernate_data.xml"/>
 
-    <!--interceptors for locale and theme-->
 
     <interceptors>
         <beans:bean class="org.springframework.web.servlet.theme.ThemeChangeInterceptor">
@@ -62,14 +61,12 @@
         </beans:bean>
     </interceptors>
 
-    <!--Theme support-->
 
     <beans:bean id="themeSource"
                 class="org.springframework.ui.context.support.ResourceBundleThemeSource">
         <beans:property name="basenamePrefix" value="theme-"/>
     </beans:bean>
 
-    <!-- Theme Change Interceptor and Resolver definition -->
 
     <beans:bean id="themeChangeInterceptor"
                 class="org.springframework.web.servlet.theme.ThemeChangeInterceptor">

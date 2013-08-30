@@ -100,6 +100,13 @@ public class BookDAOImpl extends AbstractDAOImpl<Book, Integer> implements BookD
                 .list();
     }
 
+    @Override
+    public List<Book> findByCategory (Category category) {
+        return getSession().createCriteria(Book.class)
+                .add(Restrictions.eq("category", category))
+                .list();
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public List<Book> findAllByAuthor (User user) {

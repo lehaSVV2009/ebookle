@@ -44,8 +44,6 @@ public class HomeController {
                                         @PathVariable("searchType") String searchType) {
         try {
 
-            //TODO: check searchType on exist
-
             List<Book> books = new ArrayList<Book>();
             List<Category> categories = categoryService.findAll();
             if ("mostPopular".equals(searchType)) {

@@ -28,5 +28,6 @@ public interface BookService {
     List<Book> findMostPopularWithAuthors ();
     List<Book> findRecentWithAuthors ();
     List<Book> findByCategoryWithAuthors (Category category);
+    List<Book> findByCategory (Category category);
     List<Book> findAllByAuthor (User user);
 }

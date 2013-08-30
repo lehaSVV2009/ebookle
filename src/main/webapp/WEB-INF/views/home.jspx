@@ -126,6 +126,10 @@
                         </tbody>
                     </table>
                 </c:if>
+
+                <a href="/statistics/authorCounts">Statistics</a>
+
+
             </fieldset>
         </form>
     </div>

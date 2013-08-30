@@ -101,6 +101,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<Book> findByCategory (Category category) {
+        return bookDAO.findByCategory(category);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
     public List<Book> findAllByAuthor (User user) {
         return bookDAO.findAllByAuthor(user);
     }

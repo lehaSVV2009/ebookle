@@ -9,6 +9,7 @@
     <spring:message code="footer_text" var="footerText"/>
 
     <div class="container">
+
         <a href="?lang=en"><img src="http://localhost:8080/web-resources/img/eng16.png">eng</img></a>
         <a href="?lang=ru"><img src="http://localhost:8080/web-resources/img/rus16.png">rus</img></a>
 

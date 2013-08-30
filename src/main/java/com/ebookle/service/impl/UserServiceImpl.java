@@ -70,4 +70,5 @@ public class UserServiceImpl implements UserService {
         return userDAO.findAllNotActivatedByKey(key);
     }
 
+
 }

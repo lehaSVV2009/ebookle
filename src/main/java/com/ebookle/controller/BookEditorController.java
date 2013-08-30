@@ -64,6 +64,7 @@ public class BookEditorController {
 
         if (!principal.getName().equals(userLogin)) {
             modelMap.addAttribute("error", "You cannot enter site!");
+
             return "error";
         }
         String bookTitle = bookForm.getTitle();
@@ -71,6 +72,8 @@ public class BookEditorController {
         bookValidator.validate(bookForm, errors, user);
         if (errors.hasErrors()) {
             modelMap.addAttribute("error", "Bad book title!");
+            modelMap.addAttribute("categories", categoryService.findAll());
+            modelMap.addAttribute("userLogin", userLogin);
             return "create_new_book";
         }
         Category category = categoryService.findById(bookForm.getCategory());

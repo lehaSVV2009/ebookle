@@ -60,5 +60,4 @@ public class UserDAOImpl extends AbstractDAOImpl<User, Integer> implements UserD
                 .list();
     }
 
-
 }
