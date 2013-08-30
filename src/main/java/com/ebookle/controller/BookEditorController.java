@@ -224,31 +224,14 @@ public class BookEditorController {
     @RequestMapping(value = "/{userLogin}/remove/{bookId}", method = RequestMethod.GET)
     public String deleteBook(Principal principal, @PathVariable("userLogin") String userLogin, @PathVariable("bookId")Integer bookId){
 
-        /*if(principal != null) {
-            if(principal.getName().equals(userLogin)) {
-                List<Tag> tags = tagService.findAllWithBooks();
-                for (Tag tag : tags) {
-                    List<Book> tagBooks = tag.getBooks();
-                    for (int i = 0; i < tagBooks.size(); ++i) {
-                        Book tagBook = tagBooks.get(i);
-                        if (tagBook.getId() == bookId) {
-                            tagBooks.remove(i);
-                            --i;
-                        }
-                    }
-                    tagService.saveOrUpdate(tag);
-                }
-                bookService.delete(bookId);
-            }
-        }
-        */
+        bookService.delete(bookId);
         return "redirect:/";
     }
 
     private void createChapter (Book book, int number) {
         Chapter chapter = new Chapter(
                 UtilStrings.STANDARD_CHAPTER_NAME + number,
-                "Input text here",
+                UtilStrings.STANDARD_CHAPTER_TEXT,
                 book,
                 number
         );

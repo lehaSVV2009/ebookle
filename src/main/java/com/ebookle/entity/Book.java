@@ -52,7 +52,7 @@ public class Book implements Entity, Serializable {
     private List<Chapter> chapters = new ArrayList<Chapter>();
 
     @Fetch(FetchMode.SELECT)
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @JoinTable(name = "bookTag",
             joinColumns = { @JoinColumn(name = "BOOK_ID") },
             inverseJoinColumns = { @JoinColumn(name = "TAG_ID") } )

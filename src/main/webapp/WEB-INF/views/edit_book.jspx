@@ -6,15 +6,18 @@
     <jsp:output omit-xml-declaration="yes"/>
 
     <spring:message code="label.add_like" var="addLike"/>
+    <spring:message code="label.create_new_chapter" var="labelCreateChapter"/>
+    <spring:message code="label.edit_chapter" var="labelEdit"/>
+    <spring:message code="label.remove_chapter" var="labelRemove"/>
+    <spring:message code="label.show_chapter" var="labelShow"/>
+    <spring:message code="label.save_chapter" var="labelSave"/>
 
     <table>
         <tr>
-            <td>
-                <h2>${book.title} </h2>
-            </td>
-            <td>
-                <h2>${currentChapter.title}</h2>
-            </td>
+            <h2>${book.title} </h2>
+        </tr>
+        <tr>
+            <h2>${currentChapter.title}</h2>
         </tr>
     </table>
     <c:choose>
@@ -25,7 +28,7 @@
                 <c:when test="${userAction eq 'edit'}">
 
                     <div class="well leftSidePanel">
-                        <a href="/${userLogin}/editBook/${bookTitle}/createNewChapter">Create New Chapter</a>
+                        <a href="/${userLogin}/editBook/${bookTitle}/createNewChapter">${labelCreateChapter}</a>
                         <table class="table table-bordered leftSideTable">
                             <c:forEach items="${book.chapters}" var="chapter">
                                 <tr>
@@ -38,7 +41,7 @@
                                     <td>
                                         <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}/deleteChapter"
                                               method="get">
-                                            <input type="submit" value="remove"/>
+                                            <input type="submit" value="${labelRemove}"/>
                                         </form>
                                     </td>
                                 </tr>
@@ -46,17 +49,19 @@
                         </table>
                     </div>
 
-                    <div  class="well content">
+                    <div class="well content">
                         <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}" method="get">
-                            <input type="submit" value="Edit"/>
+                            <input type="submit" value="${labelEdit}"/>
                         </form>
-                        <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show" method="get">
-                            <input type="submit" value="Show"/>
+                        <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show"
+                              method="get">
+                            <input type="submit" value="${labelShow}"/>
                         </form>
-                        <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/save" method="post">
+                        <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/save"
+                              method="post">
                             <textarea name="text" class="reader">${currentChapter.text}</textarea>
                             <br/>
-                            <input type="submit" value="Save Chapter"/>
+                            <input type="submit" value="${labelSave}"/>
                         </form>
                     </div>
                 </c:when>
@@ -65,11 +70,12 @@
 
                 <c:otherwise>
                     <div class="well leftSidePanel">
-                        <table  class="table table-bordered leftSideTable">
+                        <table class="table table-bordered leftSideTable">
                             <c:forEach items="${book.chapters}" var="chapter">
                                 <tr>
                                     <td>
-                                        <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}/show" method="get">
+                                        <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}/show"
+                                              method="get">
                                             <input type="submit" value="${chapter.title}"/>
                                         </form>
                                     </td>
@@ -77,16 +83,17 @@
                             </c:forEach>
                         </table>
                     </div>
-                    <div  class="well content">
+                    <div class="well content">
 
                         <!--TODO: change position-->
                         <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}" method="get">
-                            <input type="submit" value="Edit"/>
+                            <input type="submit" value="${labelEdit}"/>
                         </form>
-                        <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show" method="get">
-                            <input type="submit" value="Show"/>
+                        <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show"
+                              method="get">
+                            <input type="submit" value="${labelShow}"/>
                         </form>
-                        <textarea disabled="disabled" class="reader">${currentChapter.text}</textarea>
+                        <div disabled="disabled" class="reader">${htmlChapterText}</div>
                     </div>
                 </c:otherwise>
             </c:choose>
@@ -108,11 +115,12 @@
             </c:if>   -->
 
             <div class="well leftSidePanel">
-                <table  class="table table-bordered leftSideTable">
+                <table class="table table-bordered leftSideTable">
                     <c:forEach items="${book.chapters}" var="chapter">
                         <tr>
                             <td>
-                                <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}/show" method="get">
+                                <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}/show"
+                                      method="get">
                                     <input type="submit" value="${chapter.title}"/>
                                 </form>
                             </td>
@@ -120,12 +128,12 @@
                     </c:forEach>
                 </table>
             </div>
-            <div  class="well content">
-                <textarea disabled="disabled" class="reader">${currentChapter.text}</textarea>
+            <div class="well content">
+                <div disabled="disabled" class="reader">${htmlChapterText}</div>
 
                 <c:if test="${person eq 'notOwnUser'}">
                     <spring:url value="#" var="likeUrl"/>
-                    <a href="${likeUrl}">${homeText}</a>
+                    <a href="${likeUrl}">${addLike}</a>
                 </c:if>
             </div>
         </c:otherwise>
