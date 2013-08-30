@@ -50,7 +50,16 @@ footer a:hover {
 .push {
     height: 63px;
 }
-/* not required for sticky footer; just pushes hero down a bit */
+
 .wrapper > .container {
     padding-top: 60px;
+}
+.reader{
+    min-height:300px ;
+    min-width: 70%;
+    max-height: 500px;
+    max-width: 980px;
+}
+.register-form{
+    width: 40%;
 }

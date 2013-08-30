@@ -1,31 +1,51 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" class="wrapper"
      xmlns:c="http://java.sun.com/jsp/jstl/core"
      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-     xmlns:joda="http://www.joda.org/joda/time/tags"
      xmlns:spring="http://www.springframework.org/tags"
      xmlns:sec="http://www.springframework.org/security/tags"
-     version="2.0" xmlns:form="http://www.springframework.org/tags/form">
+     version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
 
+    <spring:message code="label.hello" var="labelHello"/>
+    <spring:message code="label.create_book" var="labelCreateBook"/>
+    <spring:message code="label.logout" var="labelLogout"/>
+    <spring:message code="label.admin" var="labelAdmin"/>
+    <spring:message code="label.login" var="labelLogin"/>
+    <spring:message code="label.registration" var="labelRegistration"/>
+    <spring:message code="label.most_popular" var="labelMostPopular"/>
+    <spring:message code="label.recent" var="labelRecent"/>
+    <spring:message code="label.statistics" var="labelStatistics"/>
 
 
-    <spring:url value="/" var="homeUrl"/>
+    <!--TODO flasMessage-->
+    <c:if test="${not empty flashMessage}">
+        <div class="error">
+            ${flashMessage}
+        </div>
+        <br/>
+    </c:if>
+
+    <c:if test="${not empty goodMessage}">
+        <div class="success">
+            ${goodMessage}
+        </div>
+        <br/>
+    </c:if>
+
     <c:url value='/j_spring_security_logout' var="securityLogout"/>
 
-
     <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
-        <div class="well leftSidePanel" >
+        <div class="well leftSidePanel">
 
-            Hello, ${user.name}
+            ${labelHello}, ${user.name}
             <br/>
             <!--TODO your books-->
-            <!--<a href="${user.login}/books">-->Your books<!--</a>-->
+            Your books
             <br/>
 
             <table class="table table-bordered leftSideTable">
                 <c:forEach items="${user.books}" var="userBook">
-
                     <tr>
                         <td class="tableCol1">
                             <a href="/${user.login}/editBook/${userBook.title}/1">
@@ -48,13 +68,13 @@
                 </c:forEach>
             </table>
             <br/>
-            <a href="/${user.login}/bookCreation">Create Book</a>
+            <a href="/${user.login}/bookCreation">${labelCreateBook}</a>
             <br/>
-            <a href="${securityLogout}">Logout</a>
+            <a href="${securityLogout}">${labelLogout}</a>
             <c:if test="${person eq 'admin'}">
                 <div style="float: right">
                     <br/>
-                    <a href="/admin">Admin</a>
+                    <a href="/admin">${labelAdmin}</a>
                 </div>
             </c:if>
         </div>
@@ -67,44 +87,40 @@
                   method='POST'>
 
                 <input type="text" class="form-control" id="inputEmail" placeholder="Email" name='j_username' value=''/>
-                <input type="password" class="form-control" id="inputPassword" placeholder="Password" name='j_password'/>
-                <button type="submit" class="btn btn-primary" value="Sign in">Sign in</button>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password"
+                       name='j_password'/>
+                <button type="submit" class="btn btn-primary">${labelLogin}</button>
 
             </form>
-            <a href="/registration">Registration</a>
+            <a href="/registration">${labelRegistration}</a>
         </div>
     </c:if>
 
-
-    <!--TODO flasMessage-->
-    <!--<c:if test="${not empty flashMessage}">-->
-    <!--${flashMessage}-->
-    <!--<br/>-->
-    <!--</c:if>-->
 
 
 
     <div class="well content">
         <form class="bs-example form-horizontal">
             <fieldset>
-                <!--<legend>-->
                 <div class="btn-group btn-group-justified">
-                    <a href="/home/mostPopular" class="btn btn-default">Most popular</a>
-                    <a href="/home/recent" class="btn btn-default">Recent</a>
+                    <a href="/home/mostPopular" class="btn btn-default">${labelMostPopular}</a>
+                    <a href="/home/recent" class="btn btn-default">${labelRecent}</a>
+
+                    <!--TODO:makeCategorySearch -->
+
                     <c:if test="${not empty categories}">
                         <!--<ul>-->
-                            <c:forEach items="${categories}" var="category">
-                                <!--<li >-->
-                                    <a href="/home/${category.name}" class="btn btn-default">
-                                        ${category.name}
-                                    </a>
-                                <!--</li>-->
-                            </c:forEach>
+                        <c:forEach items="${categories}" var="category">
+                            <!--<li >-->
+                            <a href="/home/${category.name}" class="btn btn-default">
+                                ${category.name}
+                            </a>
+                            <!--</li>-->
+                        </c:forEach>
                         <!--</ul>-->
                     </c:if>
 
                 </div>
-                <!--</legend>-->
                 <c:if test="${not empty books}">
                     <table class="table table-bordered table1">
                         <tbody>
@@ -127,7 +143,7 @@
                     </table>
                 </c:if>
 
-                <a href="/statistics/authorCounts">Statistics</a>
+                <a href="/statistics/authorCounts">${labelStatistics}</a>
 
 
             </fieldset>
@@ -135,139 +151,3 @@
     </div>
 
 </div>
-
-
-        <!--
-        <div xmlns:jsp="http://java.sun.com/JSP/Page"
-             xmlns:c="http://java.sun.com/jsp/jstl/core"
-             xmlns:joda="http://www.joda.org/joda/time/tags"
-             xmlns:spring="http://www.springframework.org/tags"
-             xmlns:sec="http://www.springframework.org/security/tags"
-             version="2.0" xmlns:form="http://www.springframework.org/tags/form">
-            <jsp:directive.page contentType="text/html; charset=UTF-8"/>
-            <jsp:output omit-xml-declaration="yes"/>
-
-
-            <spring:message code="home_text" var="homeText"/>
-            <spring:url value="/" var="homeUrl"/>
-            <c:url value='/j_spring_security_logout' var="securityLogout"/>
-
-            <a href="${homeUrl}">${homeText}</a>
-
-
-            <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
-
-                <br/>
-
-                <div style="float: right">
-                    <a href="${securityLogout}"> Logout</a>
-                </div>
-                <br/>
-                Hello, ${user.name}
-                <br/>
-                Your books:
-                <br/>
-
-                <table>
-                    <c:forEach items="${user.books}" var="userBook">
-                        <tr>
-                            <td>
-                                <a href="/${user.login}/editBook/${userBook.title}/1">${userBook.title}</a>
-                            </td>
-                            <td>
-                                <a href="/${user.login}/remove/${userBook.id}">delete</a>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </table>
-                <br/>
-                <a href="/${user.login}/bookCreation">Create Book</a>
-
-            </sec:authorize>
-
-
-            <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <div style="float: right">
-                    <a href="/admin">Admin</a>
-                </div>
-            </sec:authorize>
-
-            Просто работает локалхост - трололол
-            <br/>
-
-            <c:if test="${not empty flashMessage}">
-                ${flashMessage}
-                <br/>
-            </c:if>
-
-            <a href="/home/mostPopular">Most Popular </a>
-            <a href="/home/recent">Recent</a>
-            <c:if test="${not empty categories}">
-                <ul>
-                    <c:forEach items="${categories}" var="category">
-                        <li>
-                            <a href="/home/${category.name}">${category.name}</a>
-                        </li>
-                    </c:forEach>
-                </ul>
-                &lt;!&ndash;<ul>&ndash;&gt;
-                &lt;!&ndash;<c:forEach items="${categories}" var="category">&ndash;&gt;
-                &lt;!&ndash;<li>&ndash;&gt;
-                &lt;!&ndash;<a href="/home/${category.name}">${category.name}</a>&ndash;&gt;
-                &lt;!&ndash;</li>&ndash;&gt;
-                &lt;!&ndash;</c:forEach>&ndash;&gt;
-                &lt;!&ndash;</ul>&ndash;&gt;
-            </c:if>
-
-            <br/>
-
-            <c:if test="${not empty books}">
-
-                <table>
-
-                    <tbody>
-                    <c:forEach items="${books}" var="book">
-                        <tr>
-                            <td><a href="/${book.user.login}/editBook/${book.title}/1/show">${book.title}</a></td>
-                            <td>${book.user.surname}</td>
-                            <td>${book.rating}</td>
-                        </tr>
-
-                    </c:forEach>
-                    </tbody>
-
-                </table>
-            </c:if>
-            <c:url value='j_spring_security_check' var="securityCheck"/>
-
-
-            <c:if test="${person eq 'guest'}">
-                <form name='login_form' action="${securityCheck}"
-                      method='POST'>
-
-                    <table>
-                        <tr>
-                            <td>User:</td>
-                            <td><input type='text' name='j_username' value=''/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Password:</td>
-                            <td><input type='password' name='j_password'/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan='2'><input name="submit" type="submit"
-                                                   value="Sign in"/>
-                            </td>
-                        </tr>
-                    </table>
-
-                </form>
-
-                <a href="/registration">Registration</a>
-
-            </c:if>
-
-        </div>
-        -->

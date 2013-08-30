@@ -10,14 +10,17 @@
 
     <div class="container">
 
-        <a href="?lang=en"><img src="http://localhost:8080/web-resources/img/eng16.png">eng</img></a>
-        <a href="?lang=ru"><img src="http://localhost:8080/web-resources/img/rus16.png">rus</img></a>
+        <span>
+            <a href="?lang=en"><img src="http://localhost:8080/web-resources/img/eng16.png">eng</img></a>
+            <a href="?lang=ru"><img src="http://localhost:8080/web-resources/img/rus16.png">rus</img></a>
+        </span>
 
         ${footerText}
 
-                    <span style="float: right">
-                        <a href="?theme=dark">dark theme</a>|
-                        <a href="?theme=light">light theme</a>
-                    </span>
+        <span style="float: right">
+            <a href="?theme=dark">dark</a> |
+            <a href="?theme=light">light</a>
+        </span>
+
     </div>
 </footer>

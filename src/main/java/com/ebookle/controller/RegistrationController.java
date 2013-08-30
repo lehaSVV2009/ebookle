@@ -33,68 +33,28 @@ public class RegistrationController {
 
     @RequestMapping("/register")
     public String register (RedirectAttributes redirectAttributes,
-                            /*@RequestParam("login") String login,
-                            @RequestParam("password") String password,
-                            @RequestParam("email") String email,
-                            @RequestParam("name") String name,
-                            @RequestParam("surname") String surname, */
                             @ModelAttribute("registrationForm") RegistrationForm registrationForm,
                             BindingResult errors) {
 
-        /*User user = new User(
-                login,
-                password,
-                email,
-                name,
-                surname,
-                "",
-                UtilStrings.USER_ROLE_TEXT,
-                false
-        );      */
         validator.validate(registrationForm, errors);
         if (errors.hasErrors()) {
             redirectAttributes.addFlashAttribute("badInput", UtilStrings.BAD_INPUT);
             return "redirect:/registration";
         }
         registrationService.register(registrationForm);
-        redirectAttributes.addFlashAttribute("flashMessage", UtilStrings.SEND_DATA_SUCCESS);
+        redirectAttributes.addFlashAttribute("goodMessage", UtilStrings.SEND_DATA_SUCCESS);
         return "redirect:/";
     }
 
     @RequestMapping(value = "/registration_success", method = RequestMethod.GET)
     public String registrationSuccess (ModelMap modelMap, @RequestParam("key") String key) {
 
-        if (registrationService.activateUser(key)) {
-            modelMap.addAttribute("registrationSuccess", UtilStrings.REGISTRATION_SUCCESS);
-            return "registration_success";
-        }
-        return "registration_failed";
+        return registrationService.activateUser(key)
+                ? "registration_success" : "registration_failed";
     }
-
-    private boolean checkParams (String login, String password, String email, String name, String surname) {
-        if ("".equals(login.trim())
-                || "".equals(password.trim())
-                || "".equals(email.trim())
-                || "".equals(name.trim())
-                || "".equals(surname.trim())) {
-            return false;
-        }
-        if (! checkLogin(login)) {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean checkLogin (String login) {
-        //TODO: check login in database
-        return true;
-    }
-
 
     @RequestMapping(value = "/registration")
     public String goToRegistration (ModelMap modelMap) {
         return "registration";
     }
-
-
 }
