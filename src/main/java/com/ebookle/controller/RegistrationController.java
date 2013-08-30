@@ -2,10 +2,14 @@ package com.ebookle.controller;
 
 import com.ebookle.entity.User;
 import com.ebookle.service.impl.RegistrationServiceImpl;
+import com.ebookle.service.validation.RegistrationValidator;
 import com.ebookle.util.UtilStrings;
+import com.ebookle.webmodel.RegistrationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,19 +28,20 @@ public class RegistrationController {
     @Autowired
     private RegistrationServiceImpl registrationService;
 
+    @Autowired
+    private RegistrationValidator validator;
+
     @RequestMapping("/register")
     public String register (RedirectAttributes redirectAttributes,
-                            @RequestParam("login") String login,
+                            /*@RequestParam("login") String login,
                             @RequestParam("password") String password,
                             @RequestParam("email") String email,
                             @RequestParam("name") String name,
-                            @RequestParam("surname") String surname) {
+                            @RequestParam("surname") String surname, */
+                            @ModelAttribute("registrationForm") RegistrationForm registrationForm,
+                            BindingResult errors) {
 
-        if (! checkParams(login, password, email, name, surname)) {
-            redirectAttributes.addFlashAttribute("badInput", UtilStrings.BAD_INPUT);
-            return "redirect:/registration";
-        }
-        User user = new User(
+        /*User user = new User(
                 login,
                 password,
                 email,
@@ -45,9 +50,13 @@ public class RegistrationController {
                 "",
                 UtilStrings.USER_ROLE_TEXT,
                 false
-        );
-        //  TODO: validate User
-        registrationService.register(user);
+        );      */
+        validator.validate(registrationForm, errors);
+        if (errors.hasErrors()) {
+            redirectAttributes.addFlashAttribute("badInput", UtilStrings.BAD_INPUT);
+            return "redirect:/registration";
+        }
+        registrationService.register(registrationForm);
         redirectAttributes.addFlashAttribute("flashMessage", UtilStrings.SEND_DATA_SUCCESS);
         return "redirect:/";
     }

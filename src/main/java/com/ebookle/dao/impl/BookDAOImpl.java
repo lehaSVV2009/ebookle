@@ -98,7 +98,15 @@ public class BookDAOImpl extends AbstractDAOImpl<Book, Integer> implements BookD
                 .add(Restrictions.eq("category", category))
                 .addOrder(Order.asc("id"))
                 .list();
+    }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public List<Book> findAllByAuthor (User user) {
+        return getSession().createCriteria(Book.class).setFetchMode("user", FetchMode.EAGER)
+                .add(Restrictions.eq("user", user))
+                .addOrder(Order.asc("id"))
+                .list();
     }
 
 }

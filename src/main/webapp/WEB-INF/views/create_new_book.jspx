@@ -14,7 +14,12 @@
     <spring:message code="create_book_button_text" var="createBookButtonText"/>
     <spring:message code="cancel" var="cancel"/>
 
-    <form action="/${userLogin}/createNewBook" method="post">
+    <c:if test="${not empty error}">
+        ${error}
+        <br/>
+    </c:if>
+
+    <form action="/${userLogin}/createNewBook" method="post" id="bookCreationForm" name="bookCreationForm">
         <h2>${createBookLabel}</h2>
         <br/>
         ${titleLabel}

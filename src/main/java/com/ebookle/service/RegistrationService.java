@@ -1,6 +1,7 @@
 package com.ebookle.service;
 
 import com.ebookle.entity.User;
+import com.ebookle.webmodel.RegistrationForm;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,5 +13,6 @@ import com.ebookle.entity.User;
 public interface RegistrationService {
 
     void register (User user);
+    void register (RegistrationForm form);
     boolean activateUser (String key);
 }

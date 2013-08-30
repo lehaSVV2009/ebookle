@@ -20,7 +20,7 @@
     </c:if>
 
 
-    <form action="/register" method="post">
+    <form action="/register" method="post" id="registrationForm" name="registrationForm">
         <h2>${registrationLabel}</h2>
         <br/>
         ${loginLabel}

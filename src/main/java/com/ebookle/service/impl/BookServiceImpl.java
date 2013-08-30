@@ -98,4 +98,10 @@ public class BookServiceImpl implements BookService {
     public List<Book> findByCategoryWithAuthors (Category category) {
         return bookDAO.findByCategoryWithAuthors(category);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Book> findAllByAuthor (User user) {
+        return bookDAO.findAllByAuthor(user);
+    }
 }

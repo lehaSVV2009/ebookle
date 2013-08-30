@@ -3,15 +3,15 @@ package com.ebookle.controller;
 import com.ebookle.entity.*;
 import com.ebookle.service.*;
 import com.ebookle.service.impl.UserServiceImpl;
+import com.ebookle.service.validation.BookValidator;
 import com.ebookle.util.UtilStrings;
+import com.ebookle.webmodel.BookCreationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -33,6 +33,9 @@ public class BookEditorController {
     private BookService bookService;
 
     @Autowired
+    private BookValidator bookValidator;
+
+    @Autowired
     private CategoryService categoryService;
 
     @Autowired
@@ -40,6 +43,7 @@ public class BookEditorController {
 
     @Autowired
     private TagService tagService;
+
 
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @RequestMapping(value = "/{userLogin}/bookCreation", method = RequestMethod.GET)
@@ -49,36 +53,41 @@ public class BookEditorController {
         return "create_new_book";
     }
 
+
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @RequestMapping(value = "/{userLogin}/createNewBook", method = RequestMethod.POST)
     public String createNewBook (Principal principal,
+                                 @ModelAttribute("newBookForm") BookCreationForm bookForm,
                                  @PathVariable("userLogin") String userLogin,
-                                 @RequestParam("title") String title,
-                                 @RequestParam("description") String description,
-                                 @RequestParam("category") Integer categoryId,
-                                 @RequestParam("bookTag") String bookTag,
-                                 ModelMap modelMap) {
+                                 ModelMap modelMap,
+                                 BindingResult errors) {
 
-        //TODO: checkParams
-        //TODO: checkBookName
         if (!principal.getName().equals(userLogin)) {
             modelMap.addAttribute("error", "You cannot enter site!");
             return "error";
         }
+        String bookTitle = bookForm.getTitle();
         User user = userService.findByLogin(principal.getName());
-        Category category = categoryService.findById(categoryId);
+        bookValidator.validate(bookForm, errors, user);
+        if (errors.hasErrors()) {
+            modelMap.addAttribute("error", "Bad book title!");
+            return "create_new_book";
+        }
+        Category category = categoryService.findById(bookForm.getCategory());
         Book book = new Book(
-                title,
-                description,
+                bookTitle,
+                bookForm.getDescription(),
                 user,
                 category
         );
+        String bookTag = bookForm.getBookTag();
         if (bookTag != null && !"".equals(bookTag)) {
             book = addTag(bookTag, book);
         }
         bookService.saveOrUpdate(book);
-        return "redirect:/" + userLogin + "/editBook/" + title + "/1";
+        return "redirect:/" + userLogin + "/editBook/" + bookTitle + "/1";
     }
+
 
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/{chapterNumber}/addTag", method = RequestMethod.POST)
@@ -144,8 +153,6 @@ public class BookEditorController {
             book = bookService.findByTitleAndUserIdWithChapters(bookTitle, user);
             chapterNumber = 1;
         }
-        //  TODO: changeBookVersion
-        //  TODO: change chapter version
         modelMap.addAttribute("book", book);
         modelMap.addAttribute("userLogin", userLogin);
         modelMap.addAttribute("currentChapter", book.getChapters().get(chapterNumber - 1));
@@ -165,7 +172,6 @@ public class BookEditorController {
         User user = userService.findByLogin(principal.getName());
         Book book = bookService.findByTitleAndUserIdWithChapters(bookTitle, user);
         createChapter(book, book.getChapters().size() + 1);
-        //  TODO: changeBookVersion
         return ("redirect:/" + userLogin + "/editBook/" + bookTitle + "/" + (book.getChapters().size() + 1));
     }
 
@@ -196,7 +202,7 @@ public class BookEditorController {
         Book book = bookService.findByTitleAndUserIdWithChapters(bookTitle,user);
         List<Chapter> chapters = book.getChapters();
 
-        for(Chapter chapter:chapters){
+        for(Chapter chapter : chapters){
             if (chapterNumber == chapter.getChapterNumber()){
                 chapterService.delete(chapter.getId());
             } else if(chapter.getChapterNumber() > chapterNumber){
@@ -210,9 +216,11 @@ public class BookEditorController {
         return ("redirect:/" + userLogin + "/editBook/" + bookTitle + "/1");
     }
 
+
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @RequestMapping(value = "/{userLogin}/remove/{bookId}", method = RequestMethod.GET)
     public String deleteBook(Principal principal, @PathVariable("userLogin") String userLogin, @PathVariable("bookId")Integer bookId){
+
         /*if(principal != null) {
             if(principal.getName().equals(userLogin)) {
                 List<Tag> tags = tagService.findAllWithBooks();

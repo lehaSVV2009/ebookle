@@ -4,6 +4,7 @@ import com.ebookle.entity.User;
 import com.ebookle.service.RegistrationService;
 import com.ebookle.util.RandomKeyCreator;
 import com.ebookle.util.UtilStrings;
+import com.ebookle.webmodel.RegistrationForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -41,6 +42,27 @@ public class RegistrationServiceImpl implements RegistrationService {
     public void register (User user) {
         String userKey = RandomKeyCreator.createRandomKey();
         user.setRegisteredKey(userKey);
+        userService.saveOrUpdate(user);
+        sendKeyToMail(
+                user.getEmail(),
+                "Registration site ebookle.com",
+                "http://localhost:8080/registration_success?key=" + userKey
+        );
+    }
+
+    @Override
+    public void register (RegistrationForm form) {
+        String userKey = RandomKeyCreator.createRandomKey();
+        User user = new User(
+                form.getLogin(),
+                form.getPassword(),
+                form.getEmail(),
+                form.getName(),
+                form.getSurname(),
+                userKey,
+                "ROLE_USER",
+                false
+        );
         userService.saveOrUpdate(user);
         sendKeyToMail(
                 user.getEmail(),
