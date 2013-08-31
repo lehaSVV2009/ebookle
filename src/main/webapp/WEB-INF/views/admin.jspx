@@ -24,11 +24,8 @@
                 </td>
                 <td>
                     <a href="/removeUser/${user.id}" methos="post">
-                        <img src="http://localhost:8080/web-resources/img/like.png"></img>
+                        <img src="http://localhost:8080/web-resources/img/delete16.png"></img>
                     </a>
-                    <!--<form action="/removeUser/${user.id}" method="post">-->
-                        <!--<input type="submit" value="${labelRemove}"/>-->
-                    <!--</form>-->
                 </td>
             </tr>
         </c:forEach>
