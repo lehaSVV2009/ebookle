@@ -79,7 +79,6 @@ public class HomeController {
             }
             modelMap.addAttribute("user", user);
             modelMap.addAttribute("userBooks", user.getBooks());
-
         } catch (Exception e) {
             e.printStackTrace();
         }

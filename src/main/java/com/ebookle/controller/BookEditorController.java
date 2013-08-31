@@ -6,6 +6,7 @@ import com.ebookle.service.impl.UserServiceImpl;
 import com.ebookle.service.validation.BookValidator;
 import com.ebookle.util.UtilStrings;
 import com.ebookle.webmodel.BookCreationForm;
+import com.sun.jndi.toolkit.url.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.List;
 
@@ -24,7 +26,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-public class BookEditorController {
+public class BookEditorController extends HelpController{
 
     @Autowired
     private UserServiceImpl userService;
@@ -64,7 +66,6 @@ public class BookEditorController {
 
         if (!principal.getName().equals(userLogin)) {
             modelMap.addAttribute("error", "You cannot enter site!");
-
             return "error";
         }
         String bookTitle = bookForm.getTitle();
@@ -86,6 +87,11 @@ public class BookEditorController {
         String bookTag = bookForm.getBookTag();
         if (bookTag != null && !"".equals(bookTag)) {
             book = addTag(bookTag, book);
+        }
+        try {
+            bookTitle = UrlUtil.encode(bookTitle, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
         bookService.saveOrUpdate(book);
         return "redirect:/" + userLogin + "/editBook/" + bookTitle + "/1";
@@ -145,6 +151,7 @@ public class BookEditorController {
                               @PathVariable("bookTitle") String bookTitle,
                               ModelMap modelMap) {
 
+        bookTitle = decodeWithUtf(bookTitle);
         if (principal == null
                 || ! principal.getName().equals(userLogin)) {
             modelMap.addAttribute("error", "Страница недоступна!");
@@ -164,10 +171,8 @@ public class BookEditorController {
         modelMap.addAttribute("person", "ownUser");
         modelMap.addAttribute("tags", bookService.findByTitleAndUserIdWithTags(bookTitle, user).getTags());
         return "edit_book";
-
     }
 
-    //  Chapter Edition
 
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/createNewChapter", method = RequestMethod.GET)

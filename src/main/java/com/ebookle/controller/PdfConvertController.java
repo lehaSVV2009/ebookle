@@ -57,22 +57,6 @@ public class PdfConvertController {
         Book book = bookService.findByTitleAndUserId(bookTitle, author);
         List<Chapter> chapters = chapterService.findAllByBook(book);
         String htmlBook = convertToHtmlBook(bookTitle, author.getName(), chapters);
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-        map.add("curl", htmlBook);
-        map.add("storefile", "true");
-        map.add("OutputFileName", "ebookle_book");
-        map.add("PageNo", "true");
-        RestTemplate restTemplate = new RestTemplate();
-        String jsonStr = restTemplate.postForObject(UtilStrings.PDF_CONVERTER_SITE, map, String.class);
-        JSONObject responseOfService = null;
-        JSONParser parser = new JSONParser();
-        try {
-            responseOfService = (JSONObject) parser.parse(jsonStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String pdfUrl = responseOfService.get("FileUrl").toString();
-        modelMap.addAttribute("pdfUrl", pdfUrl);
         return "pdf_reference";
     }
 
