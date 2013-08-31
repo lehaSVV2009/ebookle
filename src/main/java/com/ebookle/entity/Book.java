@@ -58,6 +58,9 @@ public class Book implements Entity, Serializable {
             inverseJoinColumns = { @JoinColumn(name = "TAG_ID") } )
     private List<Tag> tags = new ArrayList<Tag>();
 
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Prefer> prefers = new ArrayList<Prefer>();
+
     public Book () {
     }
 
@@ -110,7 +113,16 @@ public class Book implements Entity, Serializable {
         this.description = description;
     }
 
+    public List<Prefer> getPrefers () {
+        return prefers;
+    }
+
+    public void setPrefers (List<Prefer> prefers) {
+        this.prefers = prefers;
+    }
+
     public int getRating () {
+
         return rating;
     }
 

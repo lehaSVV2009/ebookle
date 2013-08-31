@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,6 +50,9 @@ public class User implements Entity, Serializable {
     @Column(name = "role")
     private String role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Prefer> prefers = new ArrayList<Prefer>();
+
     /*
 
     @ManyToOne
@@ -92,6 +96,14 @@ public class User implements Entity, Serializable {
 
     public String getPassword () {
         return password;
+    }
+
+    public List<Prefer> getPrefers () {
+        return prefers;
+    }
+
+    public void setPrefers (List<Prefer> prefers) {
+        this.prefers = prefers;
     }
 
     public void setPassword (String password) {

@@ -5,12 +5,15 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
 
-    <spring:message code="label.add_like" var="addLike"/>
+    <spring:message code="label.tags" var="labelTags"/>
+    <spring:message code="label.add_tag" var="labelAddTag"/>
+    <spring:message code="label.add_like" var="labelLike"/>
     <spring:message code="label.create_new_chapter" var="labelCreateChapter"/>
     <spring:message code="label.edit_chapter" var="labelEdit"/>
     <spring:message code="label.remove_chapter" var="labelRemove"/>
     <spring:message code="label.show_chapter" var="labelShow"/>
     <spring:message code="label.save_chapter" var="labelSave"/>
+    <spring:message code="label.add_dislike" var="labelDislike"/>
 
     <table>
         <tr>
@@ -47,7 +50,22 @@
                                 </tr>
                             </c:forEach>
                         </table>
+                        <br/>
+                        <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/addTag" method="post">
+                            <input type="text" name="bookTag" placeholder="${labelAddTag}"/>
+                        </form>
+                        <br/>
+                        ${labelTags}:
+                        <br/>
+                        <c:if test="${not empty tags}">
+                            <c:forEach items="${tags}" var="tag">
+                                ${tag.bookTag}
+                                <br/>
+                            </c:forEach>
+                        </c:if>
                     </div>
+
+
 
                     <div class="well content">
                         <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}" method="get">
@@ -63,6 +81,7 @@
                             <br/>
                             <input type="submit" value="${labelSave}"/>
                         </form>
+
                     </div>
                 </c:when>
 
@@ -82,6 +101,15 @@
                                 </tr>
                             </c:forEach>
                         </table>
+                        <br/>
+                        ${labelTags}:
+                        <br/>
+                        <c:if test="${not empty tags}">
+                            <c:forEach items="${tags}" var="tag">
+                                ${tag.bookTag}
+                                <br/>
+                            </c:forEach>
+                        </c:if>
                     </div>
                     <div class="well content">
 
@@ -94,6 +122,10 @@
                             <input type="submit" value="${labelShow}"/>
                         </form>
                         <div disabled="disabled" class="reader">${htmlChapterText}</div>
+
+                        <br/>
+                        <!--TODO:insert rating img-->
+                        ${book.rating}
                     </div>
                 </c:otherwise>
             </c:choose>
@@ -102,17 +134,6 @@
 
         <!--for user who cant edit-->
         <c:otherwise>
-
-            <!--TODO: insert tags
-            <br/>
-            Tags:
-            <br/>
-            <c:if test="${not empty tags}">
-                <c:forEach items="${tags}" var="tag">
-                    ${tag.bookTag}
-                    <br/>
-                </c:forEach>
-            </c:if>   -->
 
             <div class="well leftSidePanel">
                 <table class="table table-bordered leftSideTable">
@@ -127,16 +148,30 @@
                         </tr>
                     </c:forEach>
                 </table>
+                <br/>
+                ${labelTags}:
+                <br/>
+                <c:if test="${not empty tags}">
+                    <c:forEach items="${tags}" var="tag">
+                        ${tag.bookTag}
+                        <br/>
+                    </c:forEach>
+                </c:if>
             </div>
             <div class="well content">
                 <div disabled="disabled" class="reader">${htmlChapterText}</div>
 
                 <c:if test="${person eq 'notOwnUser'}">
-                    <spring:url value="#" var="likeUrl"/>
-                    <a href="${likeUrl}">${addLike}</a>
+                    <spring:url value="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show/like" var="likeUrl"/>
+                    <spring:url value="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show/dislike" var="dislikeUrl"/>
+                    <a href="${likeUrl}">${labelLike}</a> or <a href="${dislikeUrl}">${labelDislike}</a>
                 </c:if>
+                <br/>
+                <!--TODO:insert rating img-->
+                ${book.rating}
             </div>
         </c:otherwise>
 
     </c:choose>
+
 </div>
