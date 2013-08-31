@@ -1,7 +1,9 @@
 package com.ebookle.service.impl;
 
 import com.ebookle.dao.PreferDAO;
+import com.ebookle.entity.Book;
 import com.ebookle.entity.Prefer;
+import com.ebookle.entity.User;
 import com.ebookle.service.PreferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +45,12 @@ public class PreferServiceImpl implements PreferService {
     @Transactional(readOnly = true)
     public Prefer findById (int id) {
         return preferDAO.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Prefer findByBookAndMarkAuthor (Book book, User user) {
+        return preferDAO.findByBookAndMarkAuthor(book, user);
     }
 
 }

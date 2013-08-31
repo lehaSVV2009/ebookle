@@ -1,6 +1,8 @@
 package com.ebookle.service;
 
+import com.ebookle.entity.Book;
 import com.ebookle.entity.Prefer;
+import com.ebookle.entity.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -18,4 +20,5 @@ public interface PreferService {
     List<Prefer> findAll ();
     boolean delete (int id);
     Prefer findById (int id);
+    Prefer findByBookAndMarkAuthor (Book book, User user);
 }

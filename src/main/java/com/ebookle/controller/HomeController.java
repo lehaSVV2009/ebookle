@@ -87,15 +87,12 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/")
-    public String goHome (ModelMap modelMap,
-                          Principal principal,
-                          RedirectAttributes redirectAttributes) {
-
+    public String goHome () {
         return "redirect:/home/mostPopular";
     }
 
     @RequestMapping("/home")
-    public String goHome () {
+    public String goHomeFromHomeUrl () {
         return "redirect:/";
     }
 

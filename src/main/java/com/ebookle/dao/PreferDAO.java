@@ -3,9 +3,7 @@ package com.ebookle.dao;
 
 import com.ebookle.entity.Book;
 import com.ebookle.entity.Prefer;
-import com.ebookle.entity.Tag;
-
-import java.util.List;
+import com.ebookle.entity.User;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,4 +14,5 @@ import java.util.List;
  */
 public interface PreferDAO extends AbstractDAO<Prefer, Integer> {
 
+    public Prefer findByBookAndMarkAuthor (Book book, User user);
 }

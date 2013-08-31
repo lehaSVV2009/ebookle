@@ -42,10 +42,9 @@
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}/deleteChapter"
-                                              method="get">
-                                            <input type="submit" value="${labelRemove}"/>
-                                        </form>
+                                        <a href="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}/deleteChapter">
+                                            <img src="http://localhost:8080/web-resources/img/delete16.png"></img>
+                                        </a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -124,7 +123,7 @@
                         <div disabled="disabled" class="reader">${htmlChapterText}</div>
 
                         <br/>
-                        <!--TODO:insert rating img-->
+                        <img src="http://localhost:8080/web-resources/img/rating.png"></img>
                         ${book.rating}
                     </div>
                 </c:otherwise>
@@ -161,14 +160,28 @@
             <div class="well content">
                 <div disabled="disabled" class="reader">${htmlChapterText}</div>
 
-                <c:if test="${person eq 'notOwnUser'}">
-                    <spring:url value="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show/like" var="likeUrl"/>
-                    <spring:url value="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show/dislike" var="dislikeUrl"/>
-                    <a href="${likeUrl}">${labelLike}</a> or <a href="${dislikeUrl}">${labelDislike}</a>
-                </c:if>
                 <br/>
-                <!--TODO:insert rating img-->
+
+                <img src="http://localhost:8080/web-resources/img/rating.png"></img>
                 ${book.rating}
+                <c:if test="${person eq 'notOwnUser'}">
+                    <spring:url value="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show/1" var="likeUrl"/>
+                    <spring:url value="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show/-1" var="dislikeUrl"/>
+
+                    <c:if test="${mark ne 'showJustDislike'}">
+                        <a href="${likeUrl}">
+                            <img src="http://localhost:8080/web-resources/img/like.png"></img>
+                            <!--${labelLike}-->
+                        </a>
+                    </c:if>
+                    <c:if test="${mark ne 'showJustLike'}">
+                        <a href="${dislikeUrl}">
+                            <img src="http://localhost:8080/web-resources/img/dislike.png"></img>
+                            <!--${labelDislike}-->
+                        </a>
+                    </c:if>
+                </c:if>
+
             </div>
         </c:otherwise>
 

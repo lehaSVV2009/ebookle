@@ -3,10 +3,7 @@ package com.ebookle.dao.impl;
 import com.ebookle.dao.CategoryDAO;
 import com.ebookle.dao.PreferDAO;
 import com.ebookle.dao.TagDAO;
-import com.ebookle.entity.Book;
-import com.ebookle.entity.Category;
-import com.ebookle.entity.Prefer;
-import com.ebookle.entity.Tag;
+import com.ebookle.entity.*;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -28,5 +25,13 @@ public class PreferDAOImpl extends AbstractDAOImpl<Prefer, Integer> implements P
 
     protected PreferDAOImpl () {
         super(Prefer.class);
+    }
+
+    @Override
+    public Prefer findByBookAndMarkAuthor (Book book, User user) {
+        return (Prefer) getSession().createCriteria(Prefer.class)
+                .add(Restrictions.eq("user", user))
+                .add(Restrictions.eq("book", book))
+                .uniqueResult();
     }
 }

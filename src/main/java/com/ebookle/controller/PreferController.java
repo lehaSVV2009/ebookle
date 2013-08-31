@@ -1,8 +1,10 @@
 package com.ebookle.controller;
 
 import com.ebookle.entity.Book;
+import com.ebookle.entity.Prefer;
 import com.ebookle.entity.User;
 import com.ebookle.service.BookService;
+import com.ebookle.service.PreferService;
 import com.ebookle.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.security.Principal;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,34 +31,52 @@ public class PreferController {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private PreferService preferService;
+
     @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @RequestMapping("/{userLogin}/editBook/{bookTitle}/{chapterNumber}/show/like")
-    public String pressLike(@PathVariable("userLogin") String userLogin,
+    @RequestMapping("/{userLogin}/editBook/{bookTitle}/{chapterNumber}/show/{mark}")
+    public String markBook (@PathVariable("userLogin") String userLogin,
                             @PathVariable("bookTitle") String bookTitle,
                             @PathVariable("chapterNumber") Integer chapterNumber,
-                            ModelMap modelMap) {
+                            @PathVariable("mark") int mark,
+                            ModelMap modelMap,
+                            Principal principal) {
         Book book = findBookByTitleAndAuthorLogin(userLogin, bookTitle);
-        if (book == null) {
+        if (book == null || (mark != 1 && mark != -1)) {
             return sendErrorMessage(modelMap, "Page not found");
         }
-        book.setRating(book.getRating() + 1);
+        User markAuthor = userService.findByLogin(principal.getName());
+        Prefer userPrefer = adjustUserPrefer(book, markAuthor, mark);
+        preferService.saveOrUpdate(userPrefer);
         bookService.saveOrUpdate(book);
         return "redirect:/" + userLogin + "/editBook/" + bookTitle + "/" +  chapterNumber + "/show";
     }
 
-    @Secured("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @RequestMapping("/{userLogin}/editBook/{bookTitle}/{chapterNumber}/show/dislike")
-    public String pressDislike(@PathVariable("userLogin") String userLogin,
-                            @PathVariable("bookTitle") String bookTitle,
-                            @PathVariable("chapterNumber") Integer chapterNumber,
-                            ModelMap modelMap) {
-        Book book = findBookByTitleAndAuthorLogin(userLogin, bookTitle);
-        if (book == null) {
-            return sendErrorMessage(modelMap, "Page not found");
+    private Prefer adjustUserPrefer (Book book, User markAuthor, int mark) {
+        Prefer userPrefer = preferService.findByBookAndMarkAuthor(book, markAuthor);
+        if (userPrefer == null) {
+            userPrefer = createNewPrefer(mark, book, markAuthor);
+            book.setRating(book.getRating() + mark);
+        } else {
+            int oldMark = userPrefer.getMark();
+            if (oldMark == mark) {
+                userPrefer.setMark((- mark));
+                book.setRating(book.getRating() - mark);
+            } else {
+                userPrefer.setMark(mark);
+                book.setRating(book.getRating() + mark);
+            }
         }
-        book.setRating(book.getRating() - 1);
-        bookService.saveOrUpdate(book);
-        return "redirect:/" + userLogin + "/editBook/" + bookTitle + "/" +  chapterNumber + "/show";
+        return userPrefer;
+    }
+
+    private Prefer createNewPrefer(int mark, Book book, User markAuthor) {
+        Prefer userPrefer = new Prefer();
+        userPrefer.setMark(mark);
+        userPrefer.setBook(book);
+        userPrefer.setUser(markAuthor);
+        return userPrefer;
     }
 
     private Book findBookByTitleAndAuthorLogin (String userLogin, String bookTitle) {

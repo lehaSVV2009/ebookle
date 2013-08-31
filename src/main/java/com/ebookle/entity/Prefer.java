@@ -3,10 +3,6 @@ package com.ebookle.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,8 +20,8 @@ public class Prefer implements Entity, Serializable {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "rating")
-    private int rating;
+    @Column(name = "mark")
+    private int mark;
 
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
@@ -43,12 +39,12 @@ public class Prefer implements Entity, Serializable {
         this.id = id;
     }
 
-    public int getRating () {
-        return rating;
+    public int getMark () {
+        return mark;
     }
 
-    public void setRating (int rating) {
-        this.rating = rating;
+    public void setMark (int mark) {
+        this.mark = mark;
     }
 
     public Book getBook () {

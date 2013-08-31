@@ -2,8 +2,10 @@ package com.ebookle.controller;
 
 import com.ebookle.entity.Book;
 import com.ebookle.entity.Chapter;
+import com.ebookle.entity.Prefer;
 import com.ebookle.entity.User;
 import com.ebookle.service.BookService;
+import com.ebookle.service.PreferService;
 import com.ebookle.service.impl.UserServiceImpl;
 import com.petebevin.markdown.MarkdownProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +36,15 @@ public class BookViewerController {
     @Autowired
     private MarkdownProcessor markdownProcessor;
 
+    @Autowired
+    private PreferService preferService;
+
     @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/{chapterNumber}/show", method = RequestMethod.GET)
-    public String showChapter (Principal principal, @PathVariable("chapterNumber") Integer chapterNumber, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle, ModelMap modelMap) {
+    public String showChapter (Principal principal,
+                               @PathVariable("chapterNumber") Integer chapterNumber,
+                               @PathVariable("userLogin") String userLogin,
+                               @PathVariable("bookTitle") String bookTitle,
+                               ModelMap modelMap) {
 
         User user = userService.findByLogin(userLogin);
         Book book = bookService.findByTitleAndUserIdWithChapters(bookTitle, user);
@@ -51,6 +60,15 @@ public class BookViewerController {
             modelMap.addAttribute("person", "guest");
         } else if (!userLogin.equals(principal.getName())) {
             modelMap.addAttribute("person", "notOwnUser");
+            User markAuthor = userService.findByLogin(principal.getName());
+            Prefer prefer = preferService.findByBookAndMarkAuthor(book, markAuthor);
+            if (prefer == null) {
+                modelMap.addAttribute("mark", "showAll");
+            } else if (prefer.getMark() == 1) {
+                modelMap.addAttribute("mark", "showJustDislike");
+            } else {
+                modelMap.addAttribute("mark", "showJustLike");
+            }
         } else {
             modelMap.addAttribute("person", "ownUser");
         }
