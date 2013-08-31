@@ -17,6 +17,7 @@ public final class UtilStrings {
     public final static String USER_PERSON = "user";
     public final static String ADMIN_PERSON = "admin";
 
+    public final static String PDF_CONVERTER_SITE = "http://do.convertapi.com/Web2Pdf/json";
 
     public final static String BAD_INPUT = "Bad input!";
     public final static String SEND_DATA_SUCCESS = "Data was send to your email!";

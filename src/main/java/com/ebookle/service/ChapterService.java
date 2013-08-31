@@ -20,4 +20,5 @@ public interface ChapterService {
     boolean delete (int id);
     Chapter findById (int id);
     Chapter findByBookAndChapterNumber(Book book, Integer chapterNumber);
+    List<Chapter> findAllByBook (Book book);
 }

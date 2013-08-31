@@ -16,4 +16,5 @@ import java.util.List;
 public interface ChapterDAO extends AbstractDAO<Chapter, Integer>{
 
     public Chapter findByBookAndChapterNumber (Book book, Integer chapterNumber);
+    public List<Chapter> findAllByBook (Book book);
 }

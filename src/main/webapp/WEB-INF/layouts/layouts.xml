@@ -42,4 +42,8 @@
         <put-attribute name="body" value="/WEB-INF/views/statistics.jspx"/>
     </definition>
 
+    <definition name="pdf_reference" extends="default">
+        <put-attribute name="body" value="/WEB-INF/views/pdf_reference.jspx"/>
+    </definition>
+
 </tiles-definitions>

@@ -50,7 +50,9 @@
                             </c:forEach>
                         </table>
                         <br/>
-                        <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/addTag" method="post">
+
+                        <form action="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/addTag"
+                              method="post">
                             <input type="text" name="bookTag" placeholder="${labelAddTag}"/>
                         </form>
                         <br/>
@@ -63,7 +65,6 @@
                             </c:forEach>
                         </c:if>
                     </div>
-
 
 
                     <div class="well content">
@@ -165,8 +166,10 @@
                 <img src="http://localhost:8080/web-resources/img/rating.png"></img>
                 ${book.rating}
                 <c:if test="${person eq 'notOwnUser'}">
-                    <spring:url value="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show/1" var="likeUrl"/>
-                    <spring:url value="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show/-1" var="dislikeUrl"/>
+                    <spring:url value="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show/1"
+                                var="likeUrl"/>
+                    <spring:url value="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show/-1"
+                                var="dislikeUrl"/>
 
                     <c:if test="${mark ne 'showJustDislike'}">
                         <a href="${likeUrl}">
@@ -180,6 +183,12 @@
                             <!--${labelDislike}-->
                         </a>
                     </c:if>
+
+                    <div style="float : right">
+                        <a href="/${userLogin}/editBook/${bookTitle}/${chapterNumber}/savePdf">
+                            <img src="http://localhost:8080/web-resources/img/pdf.png"></img>
+                        </a>
+                    </div>
                 </c:if>
 
             </div>

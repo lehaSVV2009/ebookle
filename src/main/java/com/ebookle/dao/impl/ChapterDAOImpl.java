@@ -5,6 +5,7 @@ import com.ebookle.entity.Book;
 import com.ebookle.entity.Chapter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,6 +32,14 @@ public class ChapterDAOImpl extends AbstractDAOImpl<Chapter, Integer> implements
                 .add(Restrictions.eq("book", book))
                 .add(Restrictions.eq("chapterNumber", chapterNumber))
                 .uniqueResult();
+    }
+
+    @Override
+    public List<Chapter> findAllByBook (Book book) {
+        return getSession().createCriteria(Chapter.class)
+                .add(Restrictions.eq("book", book))
+                .addOrder(Order.asc("chapterNumber"))
+                .list();
     }
 
 }
