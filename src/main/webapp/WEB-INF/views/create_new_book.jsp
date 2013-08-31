@@ -45,7 +45,7 @@
         <br/>
         ${addTagLabel}
         <br/>
-        <input type="text" name="bookTag"></input>
+        <input type="text" name="bookTag"/>
         <br/>
         <input type="submit" value="${createBookButtonText}"/>
 

@@ -3,6 +3,8 @@
      xmlns:spring="http://www.springframework.org/tags"
      version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8"/>
+    <jsp:directive.page pageEncoding="UTF-8"/>
+
     <jsp:output omit-xml-declaration="yes"/>
 
     <spring:message code="label.tags" var="labelTags"/>
@@ -31,7 +33,10 @@
                 <c:when test="${userAction eq 'edit'}">
 
                     <div class="well leftSidePanel">
-                        <a href="/${userLogin}/editBook/${bookTitle}/createNewChapter">${labelCreateChapter}</a>
+                        <!--<c:url var="url" value=""><c:param name="bookTitle" value="${bookTitle}" /></c:url>-->
+                        <!--<c:url value="/${userLogin}/editBook/${bookTitle}/createNewChapter" var="linkCreateNewChapter"/>-->
+                        <c:out value="/${userLogin}/editBook/${bookTitle}/createNewChapter" escapeXml="true" />
+                        <a href="${linkCreateNewChapter}">${labelCreateChapter}</a>
                         <table class="table table-bordered leftSideTable">
                             <c:forEach items="${book.chapters}" var="chapter">
                                 <tr>
@@ -43,7 +48,7 @@
                                     </td>
                                     <td>
                                         <a href="/${userLogin}/editBook/${bookTitle}/${chapter.chapterNumber}/deleteChapter">
-                                            <img src="http://localhost:8080/web-resources/img/delete16.png"></img>
+                                            <img src="http://localhost:8080/web-resources/img/delete16.png"/>
                                         </a>
                                     </td>
                                 </tr>
@@ -124,7 +129,7 @@
                         <div disabled="disabled" class="reader">${htmlChapterText}</div>
 
                         <br/>
-                        <img src="http://localhost:8080/web-resources/img/rating.png"></img>
+                        <img src="http://localhost:8080/web-resources/img/rating.png"/>
                         ${book.rating}
                     </div>
                 </c:otherwise>
@@ -163,7 +168,7 @@
 
                 <br/>
 
-                <img src="http://localhost:8080/web-resources/img/rating.png"></img>
+                <img src="http://localhost:8080/web-resources/img/rating.png"/>
                 ${book.rating}
                 <c:if test="${person eq 'notOwnUser'}">
                     <spring:url value="/${userLogin}/editBook/${bookTitle}/${currentChapter.chapterNumber}/show/1"
@@ -173,20 +178,20 @@
 
                     <c:if test="${mark ne 'showJustDislike'}">
                         <a href="${likeUrl}">
-                            <img src="http://localhost:8080/web-resources/img/like.png"></img>
+                            <img src="http://localhost:8080/web-resources/img/like.png"/>
                             <!--${labelLike}-->
                         </a>
                     </c:if>
                     <c:if test="${mark ne 'showJustLike'}">
                         <a href="${dislikeUrl}">
-                            <img src="http://localhost:8080/web-resources/img/dislike.png"></img>
+                            <img src="http://localhost:8080/web-resources/img/dislike.png"/>
                             <!--${labelDislike}-->
                         </a>
                     </c:if>
 
                     <div style="float : right">
                         <a href="/${userLogin}/editBook/${bookTitle}/${chapterNumber}/savePdf">
-                            <img src="http://localhost:8080/web-resources/img/pdf.png"></img>
+                            <img src="http://localhost:8080/web-resources/img/pdf.png"/>
                         </a>
                     </div>
                 </c:if>

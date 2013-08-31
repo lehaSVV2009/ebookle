@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
-<div id="header"
+<div <%--id="header"--%>
      xmlns:jsp="http://java.sun.com/JSP/Page"
      xmlns:spring="http://www.springframework.org/tags"
      version="2.0">
@@ -17,11 +17,11 @@
             <div class="navbar-header">
                 <a href="${homeUrl}" title="Home">
 
-                    <img src="http://localhost:8080/web-resources/img/logo-small.png"></img>
+                    <img src="http://localhost:8080/web-resources/img/logo-small.png"/>
                 </a>
             </div>
             <form class="navbar-form navbar-right">
-                <input type="text" class="form-control col-lg-8" placeholder="Search"></input>
+                <input type="text" class="form-control col-lg-8" placeholder="Search"/>
             </form>
             <form class="navbar-form navbar-right">
                 <select class="form-control" id="select">

@@ -24,7 +24,7 @@
                 </td>
                 <td>
                     <a href="/removeUser/${user.id}" methos="post">
-                        <img src="http://localhost:8080/web-resources/img/delete16.png"></img>
+                        <img src="http://localhost:8080/web-resources/img/delete16.png"/>
                     </a>
                 </td>
             </tr>

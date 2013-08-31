@@ -75,6 +75,4 @@ public class BookViewerController {
         return "edit_book";
     }
 
-
-
 }

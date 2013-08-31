@@ -3,9 +3,9 @@
      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
      xmlns:spring="http://www.springframework.org/tags"
      xmlns:sec="http://www.springframework.org/security/tags"
-     version="2.0">
+     version="2.0"><%--
     <jsp:directive.page contentType="text/html; charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
+    <jsp:output omit-xml-declaration="yes"/>--%>
 
     <spring:message code="label.hello" var="labelHello"/>
     <spring:message code="label.create_book" var="labelCreateBook"/>
@@ -18,7 +18,6 @@
     <spring:message code="label.statistics" var="labelStatistics"/>
 
 
-    <!--TODO flasMessage-->
     <c:if test="${not empty flashMessage}">
         <div class="error">
             ${flashMessage}
@@ -40,7 +39,6 @@
 
             ${labelHello}, ${user.name}
             <br/>
-            <!--TODO your books-->
             Your books
             <br/>
 
@@ -61,7 +59,7 @@
                         </td>
                         <td>
                             <a href="/${user.login}/remove/${userBook.id}">
-                                <img src="http://localhost:8080/web-resources/img/delete16.png"></img>
+                                <img src="http://localhost:8080/web-resources/img/delete16.png"/>
                             </a>
                         </td>
                     </tr>
@@ -104,18 +102,12 @@
                     <a href="/home/mostPopular" class="btn btn-default">${labelMostPopular}</a>
                     <a href="/home/recent" class="btn btn-default">${labelRecent}</a>
 
-                    <!--TODO:makeCategorySearch -->
-
                     <c:if test="${not empty categories}">
-                        <!--<ul>-->
                         <c:forEach items="${categories}" var="category">
-                            <!--<li >-->
                             <a href="/home/${category.name}" class="btn btn-default">
                                 ${category.name}
                             </a>
-                            <!--</li>-->
                         </c:forEach>
-                        <!--</ul>-->
                     </c:if>
 
                 </div>

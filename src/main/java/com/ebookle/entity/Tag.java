@@ -30,6 +30,9 @@ public class Tag implements Entity, Serializable {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
     private List<Book> books = new ArrayList<Book>();
 
+    @Column(name = "counter")
+    private int counter;
+
     public Integer getId () {
         return id;
     }
@@ -52,5 +55,13 @@ public class Tag implements Entity, Serializable {
 
     public void setBooks (List<Book> books) {
         this.books = books;
+    }
+
+    public int getCounter () {
+        return counter;
+    }
+
+    public void setCounter (int counter) {
+        this.counter = counter;
     }
 }

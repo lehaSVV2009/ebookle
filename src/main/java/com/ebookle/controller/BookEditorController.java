@@ -88,11 +88,7 @@ public class BookEditorController extends HelpController{
         if (bookTag != null && !"".equals(bookTag)) {
             book = addTag(bookTag, book);
         }
-        try {
-            bookTitle = UrlUtil.encode(bookTitle, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        bookTitle = encodeToUtf(bookTitle);
         bookService.saveOrUpdate(book);
         return "redirect:/" + userLogin + "/editBook/" + bookTitle + "/1";
     }
@@ -111,10 +107,12 @@ public class BookEditorController extends HelpController{
             modelMap.addAttribute("error", "Страница недоступна!");
             return "error";
         }
+        bookTitle = decodeWithUtf(bookTitle);
         User user = userService.findByLogin(userLogin);
         Book book = bookService.findByTitleAndUserIdWithTags(bookTitle, user);
         book = addTag(bookTag, book);
         bookService.saveOrUpdate(book);
+        bookTitle = encodeToUtf(bookTitle);
         return "redirect:/" + userLogin + "/editBook/" + bookTitle + "/" + chapterNumber;
     }
 
@@ -127,6 +125,10 @@ public class BookEditorController extends HelpController{
         if (tag == null) {
             tag = new Tag();
             tag.setBookTag(bookTag);
+            tag.setCounter(0);
+            tagService.saveOrUpdate(tag);
+        } else {
+            tag.setCounter(tag.getCounter() + 1);
             tagService.saveOrUpdate(tag);
         }
         book.getTags().add(tag);
@@ -178,6 +180,7 @@ public class BookEditorController extends HelpController{
     @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/createNewChapter", method = RequestMethod.GET)
     public String createNewChapter (Principal principal, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle) {
 
+        bookTitle = decodeWithUtf(bookTitle);
         User user = userService.findByLogin(principal.getName());
         Book book = bookService.findByTitleAndUserIdWithChapters(bookTitle, user);
         createChapter(book, book.getChapters().size() + 1);
@@ -188,6 +191,7 @@ public class BookEditorController extends HelpController{
     @RequestMapping(value = "/{userLogin}/editBook/{bookTitle}/{chapterNumber}/save", method = RequestMethod.POST)
     public String saveChapter (@RequestParam("text") String text, Principal principal, @PathVariable("chapterNumber") Integer chapterNumber, @PathVariable("userLogin") String userLogin, @PathVariable("bookTitle") String bookTitle, ModelMap modelMap) {
 
+        bookTitle = decodeWithUtf(bookTitle);
         User user = userService.findByLogin(principal.getName());
         Book book = bookService.findByTitleAndUserId(bookTitle, user);
         Chapter chapter = chapterService.findByBookAndChapterNumber(book, chapterNumber);
@@ -203,6 +207,7 @@ public class BookEditorController extends HelpController{
                                  @PathVariable("userLogin") String userLogin,
                                  @PathVariable("bookTitle") String bookTitle,
                                  ModelMap modelMap) {
+        bookTitle = decodeWithUtf(bookTitle);
         if (!principal.getName().equals(userLogin)) {
             modelMap.addAttribute("error", "You haven't got access to this page!");
             return "error";
@@ -222,6 +227,7 @@ public class BookEditorController extends HelpController{
                 chapterService.saveOrUpdate(chapter);
             }
         }
+        bookTitle = encodeToUtf(bookTitle);
         return ("redirect:/" + userLogin + "/editBook/" + bookTitle + "/1");
     }
 

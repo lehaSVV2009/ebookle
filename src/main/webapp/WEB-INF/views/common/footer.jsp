@@ -11,8 +11,8 @@
     <div class="container">
 
         <span>
-            <a href="?lang=ru"><img src="http://localhost:8080/web-resources/img/rus16.png">rus</img></a>
-            <a href="?lang=en"><img src="http://localhost:8080/web-resources/img/eng16.png">eng</img></a>
+            <a href="?lang=ru"><img src="http://localhost:8080/web-resources/img/rus16.png"/>rus</a>
+            <a href="?lang=en"><img src="http://localhost:8080/web-resources/img/eng16.png"/>eng</a>
         </span>
 
         ${footerText}
